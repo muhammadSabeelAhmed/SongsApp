@@ -44,6 +44,7 @@ public class PostWebAPIData {
                                     currentSongs.add(mySongslists.get(j));
                                 }
                             }
+                            Log.d("CurrentSongsSize", ""+currentSongs.size());
                             Global.sortedList.add(new SongsMaster(currentList, currentSongs));
                         }
                     }

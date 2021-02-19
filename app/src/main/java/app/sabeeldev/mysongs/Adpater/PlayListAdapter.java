@@ -1,10 +1,14 @@
 package app.sabeeldev.mysongs.Adpater;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -13,21 +17,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.sabeeldev.mysongs.Model.PlayList;
 import app.sabeeldev.mysongs.R;
 
 public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHolder> {
+    Context context;
     ArrayList<PlayList.Songs> newsongsPlayList;
 
-    public void setPlayList(ArrayList<PlayList.Songs> songsPlayList) {
-        this.newsongsPlayList = songsPlayList;
+    public PlayListAdapter() {
+        newsongsPlayList = new ArrayList<>();
+    }
+
+    public void addInner(List<PlayList.Songs> inners) {
+        newsongsPlayList.clear();
+        newsongsPlayList.addAll(inners);
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_items, parent, false);
+        context = parent.getContext();
+        View v = LayoutInflater.from(context).inflate(R.layout.playlist_items, parent, false);
         return new PlayListAdapter.ViewHolder(v);
     }
 
@@ -44,19 +57,26 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
+        Log.d("MySongsSize", ""+newsongsPlayList.size());
         return newsongsPlayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView song_img;
         TextView song_title;
-        CardView playlist_card;
+        RelativeLayout playlist_card;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             song_img = itemView.findViewById(R.id.playlistSong_img);
             song_title = itemView.findViewById(R.id.playlistSong_title);
             playlist_card = itemView.findViewById(R.id.playlist_card);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(context, song_title.getText().toString(), Toast.LENGTH_SHORT).show();
         }
     }
 }

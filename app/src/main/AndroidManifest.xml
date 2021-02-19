@@ -12,14 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySongs"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.SplashActivity">
+        <activity android:name=".Activities.AllActivity"></activity>
+        <activity
+            android:name=".Activities.SplashActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainActivity"/>
+        <activity
+            android:name=".Activities.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

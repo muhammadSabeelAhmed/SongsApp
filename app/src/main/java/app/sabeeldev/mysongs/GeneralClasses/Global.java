@@ -9,5 +9,6 @@ public class Global {
     public static ArrayList<PlayList.Songs> mySongslists = new ArrayList<>();
     public static ArrayList<String> playList = new ArrayList<>();
     public static ArrayList<SongsMaster> sortedList = new ArrayList<>();
+    public static String playListSelected="";
 
 }
