@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/purple_700"
+        android:fontFamily="@font/semi_bold"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
     <RelativeLayout
         android:id="@+id/playlist_head"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title">
 
         <TextView
             android:id="@+id/viewAll_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/regular"
+            android:fontFamily="@font/semi_bold"
+            android:gravity="center_horizontal"
+            android:padding="10sp"
             android:singleLine="false"
             android:text="Title"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="@dimen/normal_txt" />
+            android:textSize="@dimen/medium_txt" />
 
     </RelativeLayout>
 
@@ -29,5 +45,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/playlist_head"
-        android:layout_marginTop="10dp" />
-</RelativeLayout>
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+</LinearLayout>

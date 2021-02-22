@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">My Songs</string>
+    <string name="app_name">Old Hindi Songs</string>
     <string name="playlist">PlayList</string>
     <string name="view_all">View All</string>
     <string name="txt_song_name">My Current Songs</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_no_yt_link">Not a valid Youtube ID</string>
 </resources>

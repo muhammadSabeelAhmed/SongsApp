@@ -105,9 +105,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             if (outer != null) {
                 playlist_title.setText(outer.getPlayList());
                 playListAdapter.addInner(outer.getMysongs());
+                if (outer.getMysongs().size() < 6) {
+                    view_all.setVisibility(View.GONE);
+                }
                 view_all.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Global.playListSelected = playlist_title.getText().toString();
                         Log.d("ViewAllChecker", "" + playlist_title.getText().toString());
                         Intent intent = new Intent(context, AllActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

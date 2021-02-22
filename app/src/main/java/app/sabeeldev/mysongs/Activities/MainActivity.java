@@ -1,31 +1,30 @@
 package app.sabeeldev.mysongs.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.util.Log;
+import android.view.WindowManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
-import app.sabeeldev.mysongs.Adpater.MainAdapter;
+import app.sabeeldev.mysongs.Fragments.MainFragment;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
-import app.sabeeldev.mysongs.Model.SongsMaster;
 import app.sabeeldev.mysongs.R;
+import app.sabeeldev.mysongs.RoomDatabase.DbViewmModel;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
-    MainAdapter mainAdapter;
+    public static DbViewmModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(MainActivity.this).get(DbViewmModel.class);
+        }
+        //  viewModel.insertFav(new Favourite("", "Hiritk Roshan", "", "", "this is my song", "", "", "", "https://image.shutterstock.com/image-illustration/3d-illustration-musical-notes-signs-260nw-761313844.jpg", "", ""));
+        Global.changeFragmentMain(MainActivity.this, new MainFragment(), "MainFragment", false);
 
-        setupRv();
-        showList();
         // mainAdapter = new MainAdapter();
 
 //        mainAdapter.(Global.sortedList);
@@ -33,20 +32,16 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(mainAdapter);
     }
 
-    private void setupRv() {
-//        rvMain.setHasFixedSize(true);
-        recyclerView = findViewById(R.id.main_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mainAdapter = new MainAdapter();
-        recyclerView.setAdapter(mainAdapter);
-    }
 
-    private void showList() {
-        for (int i = 0; i < Global.playList.size(); i++) { // 2 * 100 = 200 outer
-            Log.d("MyPlayListsSize", "" + Global.sortedList.get(i).getMysongs().size());
-            mainAdapter.addMain(new SongsMaster(Global.playList.get(i), Global.sortedList.get(i).getMysongs()));
-            // outerAdapter.addOuter(new Outer("Recommended", inners));
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (Global.back_status) {
+//            getSupportFragmentManager().popBackStackImmediate();
+//            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+//        } else if (getSupportFragmentManager().getFragments().size() > 0) {
+//            // super.onBackPressed();
+//        }
+//    }
+
 
 }

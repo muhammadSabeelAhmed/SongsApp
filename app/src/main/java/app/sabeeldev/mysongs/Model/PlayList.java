@@ -49,6 +49,7 @@ public class PlayList {
 
     public static class SongOfTheDay {
         private String ID, Pid, keyword, Title, Status, Date, AddedBy;
+        private boolean fav;
 
         public SongOfTheDay(String ID, String pid, String keyword, String title, String status, String date, String addedBy) {
             this.ID = ID;
