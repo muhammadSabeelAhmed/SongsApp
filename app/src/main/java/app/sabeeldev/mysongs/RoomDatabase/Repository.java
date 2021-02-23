@@ -39,6 +39,7 @@ public class Repository {
     public LiveData<List<Recent>> getAllRecent() {
         return recents;
     }
+
     public LiveData<List<Favourite>> getAllFav() {
         return favourite;
     }
@@ -53,6 +54,13 @@ public class Repository {
 
     public void clearFav() {
         new deleteFavAsyncTask(favouriteDao).execute();
+    }
+    public void deleteSingleFav(String title) {
+        new deleteSingleFavAsyncTask(favouriteDao).execute(title);
+    }
+
+    public void checkIfExistFav(String title) {
+        new checkIfExistFavAsyncTask(favouriteDao).execute(title);
     }
 
 
@@ -138,6 +146,34 @@ public class Repository {
         protected Void doInBackground(Void... voids) {
             favouriteDao.clearAllFavourite();
             return null;
+        }
+    }
+
+    private class deleteSingleFavAsyncTask extends AsyncTask<String, Void, Void> {
+        FavouriteDao favouriteDao;
+
+        public deleteSingleFavAsyncTask(FavouriteDao favouriteDao) {
+            this.favouriteDao = favouriteDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            favouriteDao.deleteSingleFav(strings[0]);
+            return null;
+        }
+    }
+
+
+    private class checkIfExistFavAsyncTask extends AsyncTask<String, Void, Boolean> {
+        FavouriteDao favouriteDao;
+
+        public checkIfExistFavAsyncTask(FavouriteDao favouriteDao) {
+            this.favouriteDao = favouriteDao;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            return  favouriteDao.checkIfExistFav(strings[0]);
         }
     }
 }

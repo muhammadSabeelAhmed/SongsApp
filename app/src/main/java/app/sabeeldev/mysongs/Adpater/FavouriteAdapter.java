@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.sabeeldev.mysongs.Activities.MainActivity;
+import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RoomDatabase.Favourite;
 import app.sabeeldev.mysongs.RoomDatabase.Recent;
@@ -45,6 +47,17 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         holder.txt_title.setText(favouriteList.get(position).getTitle());
         holder.txt_album.setText(favouriteList.get(position).getAlbumName());
         Picasso.get().load(favouriteList.get(position).getImage()).into(holder.img);
+        holder.txt_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.viewModel.deleteSingleFav(favouriteList.get(position).getTitle());
+                for (int i = 0; i < Global.favList.size(); i++) {
+                    if (Global.favList.get(i).getTitle().equals(favouriteList.get(position).getTitle())) {
+                        Global.favList.remove(i);
+                    }
+                }
+            }
+        });
     }
 
     @Override

@@ -12,7 +12,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // implementation project(path: ':youtubeExtract')
     def room_version = "2.2.5"
     def lifecycle_version = "2.2.0"
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -55,8 +56,14 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //  implementation 'com.google.android.gms:play-services-ads:19.4.0'
 
-    //Youtube Extractor
-    // implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+    // For youtube Url Extractor
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v2.0.0'
+    // ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
 
 }

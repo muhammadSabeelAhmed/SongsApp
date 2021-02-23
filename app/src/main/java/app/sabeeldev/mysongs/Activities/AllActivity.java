@@ -1,20 +1,13 @@
 package app.sabeeldev.mysongs.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import app.sabeeldev.mysongs.Adpater.AllPlayListAdapter;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
@@ -37,12 +30,12 @@ public class AllActivity extends AppCompatActivity {
         viewAlltxt = findViewById(R.id.viewAll_title);
         viewAlltxt.setText(playListSelected);
         recyclerView = findViewById(R.id.viewAll_recycler);
-        recyclerView.setLayoutManager(new GridLayoutManager(AllActivity.this, 3));
+        recyclerView.setLayoutManager(new LinearLayoutManager(AllActivity.this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(playListAdapter);
 
         for (int i = 0; i < Global.playList.size(); i++) {
             if (Global.playList.get(i).equals(playListSelected)) {
-                playListAdapter.addInner(Global.sortedList.get(i).getMysongs());
+                playListAdapter.addAllItems(Global.sortedList.get(i).getMysongs());
                 Log.d("ViewALlSize", "" + Global.sortedList.get(i).getMysongs().size());
                 playListAdapter.notifyDataSetChanged();
             }

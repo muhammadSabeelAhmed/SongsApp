@@ -1,43 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Activities.Player">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="23dp"
-        android:layout_marginRight="23dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/app_name"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:textAppearance="@android:style/TextAppearance.WindowTitle" />
-
-    <ScrollView
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/mPlayerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_marginTop="16dp">
-
-        <LinearLayout
-            android:id="@+id/main_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <ProgressBar
-                android:id="@+id/prgrBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-        </LinearLayout>
-
-    </ScrollView>
-</LinearLayout>
+        android:background="#A6000000"
+        app:controller_layout_id="@layout/exo_playback_control_view"
+        app:player_layout_id="@layout/exo_simple_player_view"
+        app:repeat_toggle_modes="none"
+        app:resize_mode="fixed_height"
+        app:show_timeout="45000"
+        app:surface_type="texture_view" />
+</androidx.constraintlayout.widget.ConstraintLayout>

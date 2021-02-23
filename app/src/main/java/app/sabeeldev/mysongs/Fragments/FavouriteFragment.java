@@ -46,9 +46,10 @@ public class FavouriteFragment extends Fragment {
     public void recentHandler() {
         MainActivity.viewModel.getAllFav().observe(this, new Observer<List<Favourite>>() {
             @Override
-            public void onChanged(List<Favourite> recents) {
-                favouriteAdapter.setFavourite(recents);
-          //  Toast.makeText(v.getContext(), "onChanged"+recents.size(), Toast.LENGTH_SHORT).show();
+            public void onChanged(List<Favourite> favourites) {
+                Global.favList = favourites;
+                favouriteAdapter.setFavourite(favourites);
+                //  Toast.makeText(v.getContext(), "onChanged"+recents.size(), Toast.LENGTH_SHORT).show();
             }
         });
     }

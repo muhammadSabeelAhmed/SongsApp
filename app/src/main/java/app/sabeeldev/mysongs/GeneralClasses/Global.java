@@ -9,17 +9,20 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.sabeeldev.mysongs.Model.PlayList;
 import app.sabeeldev.mysongs.Model.SongsMaster;
 import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RoomDatabase.DbViewmModel;
+import app.sabeeldev.mysongs.RoomDatabase.Favourite;
 
 public class Global {
     public static boolean back_status = false;
     public static ArrayList<PlayList.Songs> mySongslists = new ArrayList<>();
     public static ArrayList<String> playList = new ArrayList<>();
     public static ArrayList<SongsMaster> sortedList = new ArrayList<>();
+    public static List<Favourite> favList = new ArrayList<>();
     public static String playListSelected = "";
 
 

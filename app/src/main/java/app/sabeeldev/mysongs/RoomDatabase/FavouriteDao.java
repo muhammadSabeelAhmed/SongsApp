@@ -21,4 +21,11 @@ public interface FavouriteDao {
 
     @Query("select * from favourite_songs")
     LiveData<List<Favourite>> showAllFavourite();
+
+    @Query("DELETE FROM favourite_songs WHERE title = :itemTitle")
+    void deleteSingleFav(String itemTitle);
+
+
+    @Query("SELECT EXISTS (SELECT 1 FROM favourite_songs WHERE title = :itemTitle)")
+    boolean checkIfExistFav(String itemTitle);
 }

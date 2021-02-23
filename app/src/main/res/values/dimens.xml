@@ -6,5 +6,6 @@
     <dimen name="medium_text">14dp</dimen>
     <dimen name="small_text">12dp</dimen>
     <dimen name="ex_small_text">10dp</dimen>
+    <dimen name="activity_horizontal_margin">10dp</dimen>
 
 </resources>

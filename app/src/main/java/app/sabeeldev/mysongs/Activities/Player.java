@@ -1,112 +1,63 @@
 package app.sabeeldev.mysongs.Activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.util.Log;
+import android.util.SparseArray;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.exoplayer2.ui.PlayerView;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import app.sabeeldev.mysongs.PlayerSettings.ExoPlayerManager;
 import app.sabeeldev.mysongs.R;
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 
 public class Player extends AppCompatActivity {
 
-    private static String youtubeLink;
-    private LinearLayout mainLayout;
-    private ProgressBar mainProgressBar;
+    private String YOUTUBE_VIDEO_ID = "U_DSCLqgZCo";
+    private String BASE_URL = "http://www.youtube.com";
+    private String mYoutubeLink = BASE_URL + "/watch?v=" + YOUTUBE_VIDEO_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        mainLayout = (LinearLayout) findViewById(R.id.main_layout);
-        mainProgressBar = (ProgressBar) findViewById(R.id.prgrBar);
+        extractYoutubeUrl();
 
-//        // Check how it was started and if we can get the youtube link
-//        if (savedInstanceState == null && Intent.ACTION_SEND.equals(getIntent().getAction())
-//                && getIntent().getType() != null && "text/plain".equals(getIntent().getType())) {
-//
-//            String ytLink = "https://www.youtube.com/watch?v=o6z7ouifmLI";
-//
-//            if (ytLink != null
-//                    && (ytLink.contains("://youtu.be/") || ytLink.contains("youtube.com/watch?v="))) {
-//                youtubeLink = ytLink;
-//                // We have a valid link
-//                getYoutubeDownloadUrl(youtubeLink);
-//            } else {
-//                Toast.makeText(this, R.string.error_no_yt_link, Toast.LENGTH_LONG).show();
-//                finish();
-//            }
-//        } else if (savedInstanceState != null && youtubeLink != null) {
-//            getYoutubeDownloadUrl(youtubeLink);
-//        } else {
-//            finish();
-//        }
     }
 
-//    private void getYoutubeDownloadUrl(String youtubeLink) {
-//        new YouTubeExtractor(this) {
+    private void extractYoutubeUrl() {
+        @SuppressLint("StaticFieldLeak") YouTubeExtractor mExtractor = new YouTubeExtractor(this) {
+            @Override
+            protected void onExtractionComplete(SparseArray<YtFile> sparseArray, VideoMeta videoMeta) {
+                if (sparseArray != null) {
+                    Log.d("MyURL", "" + sparseArray.size());
+//                    for (int i = 0; i < sparseArray.size(); i++) {
+//                        if (sparseArray.get(i).getUrl() != null) {
+//                            Log.d("MyURL", "" + sparseArray.get(i).getUrl());
+//                        } else {
+//                            Log.d("MyURL", "Null;");
 //
-//            @Override
-//            public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
-//                mainProgressBar.setVisibility(View.GONE);
+//                        }
 //
-//                if (ytFiles == null) {
-//                    // Something went wrong we got no urls. Always check this.
-//                    finish();
-//                    return;
-//                }
-//                // Iterate over itags
-//                for (int i = 0, itag; i < ytFiles.size(); i++) {
-//                    itag = ytFiles.keyAt(i);
-//                    // ytFile represents one file with its url and meta data
-//                    YtFile ytFile = ytFiles.get(itag);
-//
-//                    // Just add videos in a decent format => height -1 = audio
-//                    if (ytFile.getFormat().getHeight() == -1 || ytFile.getFormat().getHeight() >= 360) {
-//                        addButtonToMainLayout(vMeta.getTitle(), ytFile);
 //                    }
-//                }
-//            }
-//        }.extract(youtubeLink, true, false);
-//    }
-//
-//    private void addButtonToMainLayout(final String videoTitle, final YtFile ytfile) {
-//        // Display some buttons and let the user choose the format
-//        String btnText = (ytfile.getFormat().getHeight() == -1) ? "Audio " +
-//                ytfile.getFormat().getAudioBitrate() + " kbit/s" :
-//                ytfile.getFormat().getHeight() + "p";
-//        btnText += (ytfile.getFormat().isDashContainer()) ? " dash" : "";
-//        Button btn = new Button(this);
-//        btn.setText(btnText);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                String filename;
-//                if (videoTitle.length() > 55) {
-//                    filename = videoTitle.substring(0, 55) + "." + ytfile.getFormat().getExt();
-//                } else {
-//                    filename = videoTitle + "." + ytfile.getFormat().getExt();
-//                }
-//                filename = filename.replaceAll("[\\\\><\"|*?%:#/]", "");
-//                downloadFromUrl(ytfile.getUrl(), videoTitle, filename);
-//                finish();
-//            }
-//        });
-//        mainLayout.addView(btn);
-//    }
-//
-//    private void downloadFromUrl(String youtubeDlUrl, String downloadTitle, String fileName) {
-//        Uri uri = Uri.parse(youtubeDlUrl);
-//        DownloadManager.Request request = new DownloadManager.Request(uri);
-//        request.setTitle(downloadTitle);
-//
-//        request.allowScanningByMediaScanner();
-//        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-//        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-//
-//        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-//        manager.enqueue(request);
-//    }
+                    playVideo(sparseArray.get(16).getUrl());
+                }
+            }
+        };
+        mExtractor.extract(mYoutubeLink, true, true);
+    }
+
+    private void playVideo(String downloadUrl) {
+        PlayerView mPlayerView = findViewById(R.id.mPlayerView);
+        mPlayerView.setPlayer(ExoPlayerManager.getSharedInstance(Player.this).getPlayerView().getPlayer());
+        ExoPlayerManager.getSharedInstance(Player.this).playStream(downloadUrl);
+    }
 
 }
