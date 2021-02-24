@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,10 +21,11 @@ import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RoomDatabase.Recent;
 
 
-public class RecentFragment extends Fragment {
+public class RecentFragment extends Fragment implements View.OnClickListener {
     View v;
     RecyclerView recyclerView;
     RecentAdapter recentAdapter;
+    TextView btn_clear;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,9 @@ public class RecentFragment extends Fragment {
         recentAdapter = new RecentAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(recentAdapter);
+
+        btn_clear = v.findViewById(R.id.clear_recent);
+        btn_clear.setOnClickListener(this);
         recentHandler();
     }
 
@@ -47,10 +52,24 @@ public class RecentFragment extends Fragment {
         MainActivity.viewModel.getAllRecents().observe(this, new Observer<List<Recent>>() {
             @Override
             public void onChanged(List<Recent> recents) {
+                Global.recentList = recents;
                 recentAdapter.setRecent(recents);
-//                Toast.makeText(MainActivity.this, "onChanged\n" + stores.get(1).getName() + "\n" + stores.get(1).getContact(), Toast.LENGTH_SHORT).show();
+                if (Global.recentList.size() > 0) {
+                    btn_clear.setVisibility(View.VISIBLE);
+                } else {
+                    btn_clear.setVisibility(View.GONE);
+                }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.clear_recent:
+                MainActivity.viewModel.clearRecent();
+                break;
+        }
     }
 }
 

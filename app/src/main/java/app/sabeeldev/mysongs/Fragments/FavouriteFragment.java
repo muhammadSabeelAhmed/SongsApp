@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,10 +20,11 @@ import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RoomDatabase.Favourite;
 
-public class FavouriteFragment extends Fragment {
+public class FavouriteFragment extends Fragment implements View.OnClickListener {
     View v;
     RecyclerView recyclerView;
     FavouriteAdapter favouriteAdapter;
+    TextView btn_clear;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,18 +40,37 @@ public class FavouriteFragment extends Fragment {
         favouriteAdapter = new FavouriteAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(favouriteAdapter);
-        recentHandler();
+
+        btn_clear = v.findViewById(R.id.clear_fav);
+        btn_clear.setOnClickListener(this);
+        
+        favouriteHandler();
+
     }
 
 
-    public void recentHandler() {
+    public void favouriteHandler() {
         MainActivity.viewModel.getAllFav().observe(this, new Observer<List<Favourite>>() {
             @Override
             public void onChanged(List<Favourite> favourites) {
                 Global.favList = favourites;
                 favouriteAdapter.setFavourite(favourites);
+                if (Global.favList.size() > 0) {
+                    btn_clear.setVisibility(View.VISIBLE);
+                } else {
+                    btn_clear.setVisibility(View.GONE);
+                }
                 //  Toast.makeText(v.getContext(), "onChanged"+recents.size(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.clear_fav:
+                MainActivity.viewModel.clearFav();
+                break;
+        }
     }
 }

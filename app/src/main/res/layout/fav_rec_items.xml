@@ -70,17 +70,13 @@
 
     </LinearLayout>
 
-    <TextView
+
+    <ImageView
         android:id="@+id/favRecSong_remove"
         android:layout_width="40dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_gravity="center_horizontal|center_vertical"
-        android:fontFamily="@font/light"
         android:gravity="center_vertical|center_horizontal"
-        android:lines="2"
-        android:text="x"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="@dimen/large_txt"
-        android:textStyle="normal"/>
+        android:padding="10dp" />
 </RelativeLayout>

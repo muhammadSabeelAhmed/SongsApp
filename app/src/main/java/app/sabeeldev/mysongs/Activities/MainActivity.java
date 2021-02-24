@@ -1,15 +1,23 @@
 package app.sabeeldev.mysongs.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.kaopiz.kprogresshud.KProgressHUD;
+
+import java.util.List;
 
 import app.sabeeldev.mysongs.Fragments.MainFragment;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RoomDatabase.DbViewmModel;
+import app.sabeeldev.mysongs.RoomDatabase.Favourite;
+import app.sabeeldev.mysongs.RoomDatabase.Recent;
 
 public class MainActivity extends AppCompatActivity {
     public static DbViewmModel viewModel;
@@ -22,26 +30,27 @@ public class MainActivity extends AppCompatActivity {
         if (viewModel == null) {
             viewModel = ViewModelProviders.of(MainActivity.this).get(DbViewmModel.class);
         }
-        //  viewModel.insertFav(new Favourite("", "Hiritk Roshan", "", "", "this is my song", "", "", "", "https://image.shutterstock.com/image-illustration/3d-illustration-musical-notes-signs-260nw-761313844.jpg", "", ""));
+        favouriteHandler();
+        recentHandler();
         Global.changeFragmentMain(MainActivity.this, new MainFragment(), "MainFragment", false);
-
-        // mainAdapter = new MainAdapter();
-
-//        mainAdapter.(Global.sortedList);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-//        recyclerView.setAdapter(mainAdapter);
     }
 
 
-//    @Override
-//    public void onBackPressed() {
-//        if (Global.back_status) {
-//            getSupportFragmentManager().popBackStackImmediate();
-//            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-//        } else if (getSupportFragmentManager().getFragments().size() > 0) {
-//            // super.onBackPressed();
-//        }
-//    }
+    public void favouriteHandler() {
+        MainActivity.viewModel.getAllFav().observe(this, new Observer<List<Favourite>>() {
+            @Override
+            public void onChanged(List<Favourite> favourites) {
+                Global.favList = favourites;
+            }
+        });
+    }
 
-
+    public void recentHandler() {
+        MainActivity.viewModel.getAllRecents().observe(this, new Observer<List<Recent>>() {
+            @Override
+            public void onChanged(List<Recent> recents) {
+                Global.recentList = recents;
+            }
+        });
+    }
 }

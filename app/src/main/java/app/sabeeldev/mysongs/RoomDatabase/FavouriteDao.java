@@ -24,8 +24,4 @@ public interface FavouriteDao {
 
     @Query("DELETE FROM favourite_songs WHERE title = :itemTitle")
     void deleteSingleFav(String itemTitle);
-
-
-    @Query("SELECT EXISTS (SELECT 1 FROM favourite_songs WHERE title = :itemTitle)")
-    boolean checkIfExistFav(String itemTitle);
 }

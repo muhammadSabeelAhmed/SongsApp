@@ -32,11 +32,11 @@ public class AllActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.viewAll_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(AllActivity.this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(playListAdapter);
+        Log.d("MyfavSize", "" + Global.favList.size());
 
         for (int i = 0; i < Global.playList.size(); i++) {
             if (Global.playList.get(i).equals(playListSelected)) {
                 playListAdapter.addAllItems(Global.sortedList.get(i).getMysongs());
-                Log.d("ViewALlSize", "" + Global.sortedList.get(i).getMysongs().size());
                 playListAdapter.notifyDataSetChanged();
             }
         }

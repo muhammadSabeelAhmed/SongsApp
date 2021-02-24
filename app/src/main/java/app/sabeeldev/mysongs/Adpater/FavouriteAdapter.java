@@ -47,13 +47,15 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         holder.txt_title.setText(favouriteList.get(position).getTitle());
         holder.txt_album.setText(favouriteList.get(position).getAlbumName());
         Picasso.get().load(favouriteList.get(position).getImage()).into(holder.img);
-        holder.txt_remove.setOnClickListener(new View.OnClickListener() {
+        holder.img_remove.setImageResource(R.drawable.ic_fav_selected);
+        holder.img_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.viewModel.deleteSingleFav(favouriteList.get(position).getTitle());
                 for (int i = 0; i < Global.favList.size(); i++) {
                     if (Global.favList.get(i).getTitle().equals(favouriteList.get(position).getTitle())) {
                         Global.favList.remove(i);
+                        break;
                     }
                 }
             }
@@ -67,12 +69,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
-        TextView txt_remove, txt_title, txt_album;
+        TextView txt_title, txt_album;
+        ImageView img_remove;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.favRecSong_img);
-            txt_remove = itemView.findViewById(R.id.favRecSong_remove);
+            img_remove = itemView.findViewById(R.id.favRecSong_remove);
             txt_title = itemView.findViewById(R.id.favRecSong_title);
             txt_album = itemView.findViewById(R.id.favRecSong_album);
         }

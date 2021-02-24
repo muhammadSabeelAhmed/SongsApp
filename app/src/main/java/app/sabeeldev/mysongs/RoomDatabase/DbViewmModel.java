@@ -47,12 +47,9 @@ public class DbViewmModel extends AndroidViewModel {
     public void clearFav() {
         repository.clearFav();
     }
+
     public void deleteSingleFav(String title) {
         repository.deleteSingleFav(title);
-    }
-    public String checkIfExistFav(String title) {
-      return   repository.checkIfExistFav(title);
-
     }
 
     public LiveData<List<Favourite>> getAllFav() {

@@ -52,8 +52,8 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img;
-        TextView txt_remove, txt_title, txt_album;
+        ImageView img, txt_remove;
+        TextView txt_title, txt_album;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

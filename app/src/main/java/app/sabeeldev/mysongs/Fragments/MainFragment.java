@@ -19,7 +19,7 @@ public class MainFragment extends Fragment {
     private String[] PAGE_TITLES = new String[]{
             "Home",
             "Recent",
-            "Favourite",
+            "Favorites",
     };
 
     private Fragment[] PAGES = new Fragment[]{

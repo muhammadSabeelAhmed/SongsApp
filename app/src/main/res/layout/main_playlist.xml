@@ -42,13 +42,11 @@
         android:id="@+id/mainPlaylist_recycler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/playlist_head"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:layout_below="@+id/playlist_head" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:layout_below="@+id/mainPlaylist_recycler"
-        android:background="#77E0F2F1" />
+        android:background="@color/border_color" />
 </RelativeLayout>

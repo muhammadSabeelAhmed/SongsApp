@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.FavouriteFragment">
 
 
+    <TextView
+        android:id="@+id/clear_fav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@color/purple_700"
+        android:fontFamily="@font/regular"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="10dp"
+        android:text="Clear Favorites"
+        android:textColor="@color/white"
+        android:textSize="@dimen/normal_txt" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favourite_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/clear_fav" />
 
-</FrameLayout>
+</RelativeLayout>

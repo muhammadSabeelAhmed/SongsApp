@@ -59,11 +59,6 @@ public class Repository {
         new deleteSingleFavAsyncTask(favouriteDao).execute(title);
     }
 
-    public void checkIfExistFav(String title) {
-        new checkIfExistFavAsyncTask(favouriteDao).execute(title);
-    }
-
-
     private class insertRecentAsyncTask extends AsyncTask<Recent, Void, Void> {
         RecentDao recentDao;
 
@@ -160,20 +155,6 @@ public class Repository {
         protected Void doInBackground(String... strings) {
             favouriteDao.deleteSingleFav(strings[0]);
             return null;
-        }
-    }
-
-
-    private class checkIfExistFavAsyncTask extends AsyncTask<String, Void, Boolean> {
-        FavouriteDao favouriteDao;
-
-        public checkIfExistFavAsyncTask(FavouriteDao favouriteDao) {
-            this.favouriteDao = favouriteDao;
-        }
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            return  favouriteDao.checkIfExistFav(strings[0]);
         }
     }
 }
