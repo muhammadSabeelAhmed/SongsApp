@@ -1,8 +1,11 @@
 package app.sabeeldev.mysongs.RetrofitUtils;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static app.sabeeldev.mysongs.GeneralClasses.Global.API_KEY;
+import static app.sabeeldev.mysongs.GeneralClasses.Global.CURRENT_API;
 import static app.sabeeldev.mysongs.GeneralClasses.Global.mySongslists;
 import static app.sabeeldev.mysongs.GeneralClasses.Global.playList;
 
@@ -70,9 +75,11 @@ public class PostWebAPIData {
     }
 
 
-    public void GetVideoData(String videoId) {
+    public void GetVideoData(String videoId, Context context) {
         if (NetworkConnectivity.isOnline()) {
-            Call<Video> call = videoApiInterface.getVideoDetails(videoId);
+            Global.mKProgressHUD = KProgressHUD.create(context).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
+            Global.mKProgressHUD.show();
+            Call<Video> call = videoApiInterface.getVideoDetails(videoId, CURRENT_API, "youtube-video-info.p.rapidapi.com", "true");
             call.enqueue(new Callback<Video>() {
                 @Override
                 public void onResponse(Call<Video> call, Response<Video> response) {
@@ -81,16 +88,26 @@ public class PostWebAPIData {
                         if (videoExtrat.getStatus() == null) {
                             Global.videosFormats.clear();
                             Global.videosFormats = videoExtrat.getAllFormats();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Global.videoTitle = videoExtrat.getVideoTitle();
-                                    Global.duration = videoExtrat.getDuration();
-                                    Player.song_title.setText(Global.videoTitle);
-                                    Player.song_duration.setText("Duration: " + Global.duration);
+                            //Global.videoTitle = videoExtrat.getVideoTitle();
+                            Global.duration = videoExtrat.getDuration();
+                            // Player.song_title.setText(Global.videoTitle);
+                            // Player.song_duration.setText("Duration: " + Global.duration);
+                            Global.changeActivity(context, new Player());
+                        } else if (videoExtrat.getmessage() != null) {
+                            Global.message = videoExtrat.getmessage();
+                            if (videoExtrat.getmessage().contains("You have exceeded the DAILY quota for Requests on your current plan")) {
+                                if (CURRENT_API.equals(API_KEY[0])) {
+                                    CURRENT_API = API_KEY[1];
+                                } else if (CURRENT_API.equals(API_KEY[1])) {
+                                    CURRENT_API = API_KEY[0];
                                 }
-                            }, 1000);
-
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        GetVideoData(videoId, context);
+                                    }
+                                }, 4000);
+                            }
                         }
                     }
                 }
@@ -104,7 +121,7 @@ public class PostWebAPIData {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    GetVideoData(videoId);
+                    GetVideoData(videoId, context);
                 }
             }, 4000);
         }

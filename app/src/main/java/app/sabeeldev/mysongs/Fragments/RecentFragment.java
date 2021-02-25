@@ -24,7 +24,7 @@ import app.sabeeldev.mysongs.RoomDatabase.Recent;
 public class RecentFragment extends Fragment implements View.OnClickListener {
     View v;
     RecyclerView recyclerView;
-    RecentAdapter recentAdapter;
+  public static   RecentAdapter recentAdapter;
     TextView btn_clear;
 
     @Override

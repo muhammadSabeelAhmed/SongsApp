@@ -2,51 +2,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingTop="10dp">
+    android:gravity="center_vertical">
 
     <RelativeLayout
-        android:id="@+id/playlist_head"
+        android:id="@+id/main_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp">
 
-        <TextView
-            android:id="@+id/playlist_title"
+        <RelativeLayout
+            android:id="@+id/playlist_head"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="100dp"
-            android:fontFamily="@font/regular"
-            android:singleLine="false"
-            android:text="Title"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/medium_txt" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/viewAll"
+            <TextView
+                android:id="@+id/playlist_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="100dp"
+                android:fontFamily="@font/regular"
+                android:singleLine="false"
+                android:text="Title"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_txt" />
+
+            <TextView
+                android:id="@+id/viewAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginRight="10dp"
+                android:background="#FFA000"
+                android:fontFamily="@font/light"
+                android:padding="5sp"
+                android:text="@string/view_all"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainPlaylist_recycler"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginRight="10dp"
-            android:background="#FFA000"
-            android:fontFamily="@font/light"
-            android:padding="5sp"
-            android:text="@string/view_all"
-            android:textColor="@android:color/black" />
+            android:layout_below="@+id/playlist_head" />
     </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mainPlaylist_recycler"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/playlist_head" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:layout_below="@+id/mainPlaylist_recycler"
+        android:layout_below="@+id/main_parent"
         android:background="@color/border_color" />
 </RelativeLayout>

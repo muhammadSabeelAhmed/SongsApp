@@ -2,10 +2,12 @@ package app.sabeeldev.mysongs.Adpater;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,11 +77,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         TextView playlist_title, view_all;
         RecyclerView rvOuter;
         PlayListAdapter playListAdapter;
+        RelativeLayout main_parent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             playlist_title = itemView.findViewById(R.id.playlist_title);
             view_all = itemView.findViewById(R.id.viewAll);
+            main_parent = itemView.findViewById(R.id.main_parent);
 //            view_all.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -107,6 +111,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 playListAdapter.addInner(outer.getMysongs());
                 if (outer.getMysongs().size() < 6) {
                     view_all.setVisibility(View.GONE);
+                }
+                if (playlist_title.getText().toString().contains("Apps")) {
+                    playlist_title.setTextColor(Color.BLACK);
+                    main_parent.setBackgroundColor(Color.parseColor("#4DFFA000"));
+                } else {
+                    main_parent.setBackgroundColor(Color.parseColor("#ffffff"));
+                    playlist_title.setTextColor(Color.BLACK);
                 }
                 view_all.setOnClickListener(new View.OnClickListener() {
                     @Override

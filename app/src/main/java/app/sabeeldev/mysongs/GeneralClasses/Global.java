@@ -32,10 +32,16 @@ public class Global {
     public static String TEST_URL_MP4 = "";
     public static String TEST_URL_MP3 = "";
     public static String duration = "";
+    public static String message = "";
+    public static String[] API_KEY = {"e833a616b2mshee1f6fe52763456p17b9a0jsn2cc1159eb10a", "1120ad2ab4msha38bfe8c8a0d860p1e23b4jsn22089439ad47"};
+    public static String CURRENT_API = API_KEY[1];
     public static String videoTitle = "";
     public static String playListSelected = "";
     public static String imgURL = "";
     public static KProgressHUD mKProgressHUD;
+    public static int height = 0;
+    public static int width = 0;
+public static String playerChecker="";
     public static void changeFragmentMain(Context context, Fragment fragment, String device_back_tag, boolean status) {
         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fadein,
                 R.anim.fadeout);

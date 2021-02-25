@@ -4,15 +4,24 @@ import java.util.ArrayList;
 
 public class Video {
     private String VideoTitle, Duration, VideoTags;
-    private ArrayList<AllFormats> AllFormats;
+    private ArrayList<AllFormats> AllFormats = new ArrayList<>();
     private String Status, Status_Code, Message;
+    private String message;
+
+    public ArrayList<Video.AllFormats> getAllFormats() {
+        return AllFormats;
+    }
+
+    public void setAllFormats(ArrayList<Video.AllFormats> allFormats) {
+        this.AllFormats = allFormats;
+    }
 
     public String getStatus() {
         return Status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.Status = status;
     }
 
     public String getStatus_Code() {
@@ -20,7 +29,7 @@ public class Video {
     }
 
     public void setStatus_Code(String status_Code) {
-        Status_Code = status_Code;
+        this.Status_Code = status_Code;
     }
 
     public String getMessage() {
@@ -28,7 +37,15 @@ public class Video {
     }
 
     public void setMessage(String message) {
-        Message = message;
+        this.Message = message;
+    }
+
+    public String getmessage() {
+        return message;
+    }
+
+    public void setmessage(String Message) {
+        this.message = Message;
     }
 
     public String getVideoTitle() {
@@ -36,7 +53,7 @@ public class Video {
     }
 
     public void setVideoTitle(String videoTitle) {
-        VideoTitle = videoTitle;
+        this.VideoTitle = videoTitle;
     }
 
     public String getDuration() {
@@ -44,7 +61,7 @@ public class Video {
     }
 
     public void setDuration(String duration) {
-        Duration = duration;
+        this.Duration = duration;
     }
 
     public String getVideoTags() {
@@ -52,25 +69,18 @@ public class Video {
     }
 
     public void setVideoTags(String videoTags) {
-        VideoTags = videoTags;
+        this.VideoTags = videoTags;
     }
 
-    public ArrayList<Video.AllFormats> getAllFormats() {
-        return AllFormats;
-    }
-
-    public void setAllFormats(ArrayList<Video.AllFormats> allFormats) {
-        AllFormats = allFormats;
-    }
 
     public static class AllFormats {
         private String Link, Type, Extension, Quality;
 
         public AllFormats(String link, String type, String extension, String quality) {
-            Link = link;
-            Type = type;
-            Extension = extension;
-            Quality = quality;
+            this.Link = link;
+            this.Type = type;
+            this.Extension = extension;
+            this.Quality = quality;
         }
 
         public String getLink() {
@@ -78,7 +88,7 @@ public class Video {
         }
 
         public void setLink(String link) {
-            Link = link;
+            this.Link = link;
         }
 
         public String getType() {
@@ -86,7 +96,7 @@ public class Video {
         }
 
         public void setType(String type) {
-            Type = type;
+            this.Type = type;
         }
 
         public String getExtension() {
@@ -94,7 +104,7 @@ public class Video {
         }
 
         public void setExtension(String extension) {
-            Extension = extension;
+            this.Extension = extension;
         }
 
         public String getQuality() {
@@ -102,7 +112,7 @@ public class Video {
         }
 
         public void setQuality(String quality) {
-            Quality = quality;
+            this.Quality = quality;
         }
     }
 }

@@ -24,9 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import app.sabeeldev.mysongs.Adpater.PlayerAdapter;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.GeneralClasses.MyBrowser;
+import app.sabeeldev.mysongs.Model.PlayList;
+import app.sabeeldev.mysongs.Model.SongsMaster;
 import app.sabeeldev.mysongs.R;
 
 import static app.sabeeldev.mysongs.GeneralClasses.Global.playListSelected;
@@ -44,22 +48,18 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
     Handler myHandler;
     Runnable myRunnable;
     String frameVideo = "";
-    DisplayMetrics displayMetrics;
+    ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         init();
     }
 
 
     private void init() {
-        Global.mKProgressHUD = KProgressHUD.create(Player.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
-        Global.mKProgressHUD.show();
         btn_audio = findViewById(R.id.btn_audio);
         btn_audio.setOnClickListener(this);
 
@@ -75,7 +75,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
         title = findViewById(R.id.player_title);
 
         title.setText(playListSelected);
-        song_duration.setText("");
         song_album.setText(playListSelected);
 
         videoImg = findViewById(R.id.videoimage);
@@ -84,14 +83,30 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
         recyclerView.setAdapter(playListAdapter);
         Log.d("MyfavSize", "" + Global.favList.size());
 
-        for (int i = 0; i < Global.playList.size(); i++) {
-            if (Global.playList.get(i).equals(playListSelected)) {
-                playListAdapter.addAllItems(Global.sortedList.get(i).getMysongs());
-                playListAdapter.notifyDataSetChanged();
+        if (Global.playerChecker.equals("fav")) {
+            myPlayList.clear();
+            for (int i = 0; i < Global.favList.size(); i++) {
+                myPlayList.add(new PlayList.Songs("" + Global.favList.get(i).getAlbumID(), "" + Global.favList.get(i).getAlbumName(), "" + Global.favList.get(i).getAlbumsort(),
+                        "" + Global.favList.get(i).getSongID(), "" + Global.favList.get(i).getTitle(), "" + Global.favList.get(i).getWebview(), "" + Global.favList.get(i).getIsRedirection(),
+                        "" + Global.favList.get(i).getRedirectionApp(), "" + Global.favList.get(i).getImage(), "" + Global.favList.get(i).getYoutubecode(), "" + Global.favList.get(i).getSongSortorder()));
+            }
+            playListAdapter.addAllItems(myPlayList);
+        } else if (Global.playerChecker.equals("recent")) {
+            myPlayList.clear();
+            for (int i = 0; i < Global.recentList.size(); i++) {
+                myPlayList.add(new PlayList.Songs("" + Global.recentList.get(i).getAlbumID(), "" + Global.recentList.get(i).getAlbumName(), "" + Global.recentList.get(i).getAlbumsort(),
+                        "" + Global.recentList.get(i).getSongID(), "" + Global.recentList.get(i).getTitle(), "" + Global.recentList.get(i).getWebview(), "" + Global.recentList.get(i).getIsRedirection(),
+                        "" + Global.recentList.get(i).getRedirectionApp(), "" + Global.recentList.get(i).getImage(), "" + Global.recentList.get(i).getYoutubecode(), "" + Global.recentList.get(i).getSongSortorder()));
+            }
+            playListAdapter.addAllItems(myPlayList);
+        } else {
+            for (int i = 0; i < Global.playList.size(); i++) {
+                if (Global.playList.get(i).equals(playListSelected)) {
+                    playListAdapter.addAllItems(Global.sortedList.get(i).getMysongs());
+                }
             }
         }
         videoView = findViewById(R.id.video_view);
-
 
         myHandler = new Handler();
         myRunnable = new Runnable() {
@@ -100,7 +115,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
                 if (!Global.duration.equals("")) {
                     startLoadingPage("video");
                 } else {
-                    myHandler.postDelayed(myRunnable, 800);
+                    myHandler.postDelayed(myRunnable, 2000);
                 }
             }
         };
@@ -123,16 +138,18 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
 
     public void startLoadingPage(String type) {
         for (int i = 0; i < Global.videosFormats.size(); i++) {
-            if (Global.videosFormats.get(i).getType().equals("mp4")) {
-                if (Global.videosFormats.get(i).getQuality().equals("360")) {
+            if (Global.videosFormats.get(i).getType() != null && Global.videosFormats.get(i).getType().equals("mp4")) {
+                if (Global.videosFormats.get(i).getQuality() != null && Global.videosFormats.get(i).getQuality().equals("360")) {
                     Global.TEST_URL_MP4 = Global.videosFormats.get(i).getLink();
                 }
-            } else if (Global.videosFormats.get(i).getType().equals("audio")) {
-                if (Global.videosFormats.get(i).getExtension().equals("m4a") || Global.videosFormats.get(i).getExtension().equals("opus") || Global.videosFormats.get(i).getExtension().equals("mp3")) {
+            } else if (Global.videosFormats.get(i).getType() != null && Global.videosFormats.get(i).getType().equals("audio")) {
+                if (Global.videosFormats.get(i).getExtension() != null && (Global.videosFormats.get(i).getExtension().equals("m4a") || Global.videosFormats.get(i).getExtension().equals("opus") || Global.videosFormats.get(i).getExtension().equals("mp3"))) {
                     Global.TEST_URL_MP3 = Global.videosFormats.get(i).getLink();
                 }
             }
         }
+
+        song_duration.setText(Global.duration);
         WebViewClient webClient = new WebViewClient() {
             // Override page so it's load on my view only
             @Override
@@ -152,7 +169,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Global.mKProgressHUD.dismiss();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        videoView.setVisibility(View.VISIBLE);
+                        Player.videoImg.setVisibility(View.GONE);
+                        Global.mKProgressHUD.dismiss();
+                    }
+                }, 2000);
             }
         };
         videoView.setWebViewClient(webClient);
@@ -166,8 +190,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener {
             this.type.setText("Audio");
             frameVideo = "<!DOCTYPE html><html><body style=\"padding: 0px; margin: 0px;\"><iframe width=100% height=250px src=\"" + Global.TEST_URL_MP3 + "\" frameborder=\"0\" allowfullscreen=true></iframe></body></html>";
         }
-        Player.videoImg.setVisibility(View.GONE);
-        videoView.setVisibility(View.VISIBLE);
+
         videoView.loadData(frameVideo, "text/html", "utf-8");
     }
 }

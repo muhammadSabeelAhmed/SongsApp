@@ -40,7 +40,6 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
     }
 
     public void addAllItems(List<PlayList.Songs> inners) {
-
         newsongsPlayList.clear();
         newsongsPlayList = inners;
         notifyDataSetChanged();
@@ -104,7 +103,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                     Picasso.get().load(newsongsPlayList.get(position).getImage()).into(videoImg);
                     Global.mKProgressHUD = KProgressHUD.create(v.getContext()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
                     Global.mKProgressHUD.show();
-                    Global.videoTitle = "";
+                    Global.videoTitle = newsongsPlayList.get(position).getTitle();
                     Global.duration="";
 
                     Recent recent = new Recent("" + newsongsPlayList.get(position).getAlbumID(), "" + newsongsPlayList.get(position).getAlbumName(), "" + newsongsPlayList.get(position).getAlbumsort(),
@@ -125,7 +124,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                         Global.recentList.add(recent);
                     }
 
-                    postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode());
+                    postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
                 } else {
                     Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }
