@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.sabeeldev.mysongs.Activities.MainActivity;
+import app.sabeeldev.mysongs.Activities.NewPlayer;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RetrofitUtils.PostWebAPIData;
@@ -118,8 +119,9 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
                 Global.imgURL = recentList.get(position).getImage();
                 Global.videoTitle = recentList.get(position).getTitle();
                 Global.duration = "";
-                postWebAPIData.GetVideoData(recentList.get(position).getYoutubecode(), context);
-                //  Global.changeActivity(context, new Player());
+                Global.videoCode = recentList.get(position).getYoutubecode();
+              //  postWebAPIData.GetVideoData(recentList.get(position).getYoutubecode(), context);
+                Global.changeActivity(context, new NewPlayer());
             }
         });
 

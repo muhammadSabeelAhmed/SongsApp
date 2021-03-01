@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.sabeeldev.mysongs.Activities.MainActivity;
+import app.sabeeldev.mysongs.Activities.NewPlayer;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.Model.PlayList;
 import app.sabeeldev.mysongs.R;
@@ -96,9 +97,11 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                     Global.playListSelected = newsongsPlayList.get(position).getAlbumName();
                     Global.imgURL = newsongsPlayList.get(position).getImage();
                     Global.videoTitle = newsongsPlayList.get(position).getTitle();
+                    Global.videoCode = newsongsPlayList.get(position).getYoutubecode();
+
                     Global.duration = "";
-                    postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
-                  //  Global.changeActivity(context, new Player());
+                  //  postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
+                   Global.changeActivity(context, new NewPlayer());
                 }
             }
         });

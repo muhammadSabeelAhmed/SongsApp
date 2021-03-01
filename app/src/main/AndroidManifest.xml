@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySongs"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.NewPlayer"></activity>
         <activity
             android:name=".Activities.Player"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />

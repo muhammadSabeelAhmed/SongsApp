@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.sabeeldev.mysongs.Activities.MainActivity;
+import app.sabeeldev.mysongs.Activities.NewPlayer;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.Model.PlayList;
 import app.sabeeldev.mysongs.R;
@@ -97,13 +98,14 @@ public class AllPlayListAdapter extends RecyclerView.Adapter<AllPlayListAdapter.
         holder.playlist_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playerChecker="normal";
+                playerChecker = "normal";
                 if (newsongsPlayList.get(position).getAlbumName().contains("Apps")) {
 
                 } else {
                     Global.imgURL = newsongsPlayList.get(position).getImage();
                     Global.playListSelected = holder.song_album.getText().toString();
                     Global.videoTitle = newsongsPlayList.get(position).getTitle();
+                    Global.videoCode = newsongsPlayList.get(position).getYoutubecode();
                     Global.duration = "";
                     Recent recent = new Recent("" + newsongsPlayList.get(position).getAlbumID(), "" + newsongsPlayList.get(position).getAlbumName(), "" + newsongsPlayList.get(position).getAlbumsort(),
                             "" + newsongsPlayList.get(position).getSongID(), "" + newsongsPlayList.get(position).getTitle(), "" + newsongsPlayList.get(position).getWebview(),
@@ -123,8 +125,8 @@ public class AllPlayListAdapter extends RecyclerView.Adapter<AllPlayListAdapter.
                         Global.recentList.add(recent);
                     }
 
-                    postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
-                   // Global.changeActivity(context, new Player());
+                    //    postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
+                    Global.changeActivity(context, new NewPlayer());
                 }
             }
         });

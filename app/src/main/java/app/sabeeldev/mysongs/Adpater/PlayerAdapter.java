@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.sabeeldev.mysongs.Activities.MainActivity;
+import app.sabeeldev.mysongs.Activities.NewPlayer;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.Model.PlayList;
 import app.sabeeldev.mysongs.R;
@@ -100,11 +101,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 if (!newsongsPlayList.get(position).getYoutubecode().equals("0")) {
-                    Picasso.get().load(newsongsPlayList.get(position).getImage()).into(videoImg);
-                    Global.mKProgressHUD = KProgressHUD.create(v.getContext()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
-                    Global.mKProgressHUD.show();
+                    Picasso.get().load(newsongsPlayList.get(position).getImage()).into(NewPlayer.videoImg);
+                    //   Global.mKProgressHUD = KProgressHUD.create(v.getContext()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
+                    //   Global.mKProgressHUD.show();
                     Global.videoTitle = newsongsPlayList.get(position).getTitle();
-                    Global.duration="";
+                    Global.duration = "";
+                    Global.videoCode = newsongsPlayList.get(position).getYoutubecode();
 
                     Recent recent = new Recent("" + newsongsPlayList.get(position).getAlbumID(), "" + newsongsPlayList.get(position).getAlbumName(), "" + newsongsPlayList.get(position).getAlbumsort(),
                             "" + newsongsPlayList.get(position).getSongID(), "" + newsongsPlayList.get(position).getTitle(), "" + newsongsPlayList.get(position).getWebview(),
@@ -123,8 +125,8 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                         MainActivity.viewModel.insertRecent(recent);
                         Global.recentList.add(recent);
                     }
-
-                    postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
+                    NewPlayer.loadVideo(Global.videoCode);
+                    // postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(), context);
                 } else {
                     Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }

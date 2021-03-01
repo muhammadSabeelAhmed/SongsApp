@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.sabeeldev.mysongs.Activities.MainActivity;
+import app.sabeeldev.mysongs.Activities.NewPlayer;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
 import app.sabeeldev.mysongs.R;
 import app.sabeeldev.mysongs.RetrofitUtils.PostWebAPIData;
@@ -95,9 +96,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 Global.playListSelected = favouriteList.get(position).getAlbumName();
                 Global.imgURL = favouriteList.get(position).getImage();
                 Global.videoTitle = favouriteList.get(position).getTitle();
+                Global.videoCode = favouriteList.get(position).getYoutubecode();
                 Global.duration = "";
-                postWebAPIData.GetVideoData(favouriteList.get(position).getYoutubecode(), context);
-                //  Global.changeActivity(context, new Player());
+              //  postWebAPIData.GetVideoData(favouriteList.get(position).getYoutubecode(), context);
+                  Global.changeActivity(context, new NewPlayer());
             }
         });
 

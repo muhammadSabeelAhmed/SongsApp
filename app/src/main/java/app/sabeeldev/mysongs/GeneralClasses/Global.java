@@ -37,6 +37,7 @@ public class Global {
     public static String CURRENT_API = API_KEY[1];
     public static String videoTitle = "";
     public static String playListSelected = "";
+    public static String videoCode = "";
     public static String imgURL = "";
     public static KProgressHUD mKProgressHUD;
     public static int height = 0;

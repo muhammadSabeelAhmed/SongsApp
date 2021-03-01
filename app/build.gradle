@@ -61,5 +61,8 @@ dependencies {
 
     implementation 'com.kaopiz:kprogresshud:1.2.0'
 
+    implementation 'com.jaedongchicken:ytplayer:1.4.4'
+
+
 
 }
