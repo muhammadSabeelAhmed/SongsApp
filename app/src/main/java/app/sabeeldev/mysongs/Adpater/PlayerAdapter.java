@@ -71,28 +71,32 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
         holder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Favourite addfav = new Favourite("" + newsongsPlayList.get(position).getAlbumID(), "" + newsongsPlayList.get(position).getAlbumName(), "" + newsongsPlayList.get(position).getAlbumsort(),
-                        "" + newsongsPlayList.get(position).getSongID(), "" + newsongsPlayList.get(position).getTitle(), "" + newsongsPlayList.get(position).getWebview(),
-                        "" + newsongsPlayList.get(position).getIsRedirection(), "" + newsongsPlayList.get(position).getRedirectionApp(), "" + newsongsPlayList.get(position).getImage(),
-                        "" + newsongsPlayList.get(position).getYoutubecode(), "" + newsongsPlayList.get(position).getSongSortorder());
+                if (!newsongsPlayList.get(position).getYoutubecode().equals("0") && !newsongsPlayList.get(position).getYoutubecode().equals("")) {
+                    Favourite addfav = new Favourite("" + newsongsPlayList.get(position).getAlbumID(), "" + newsongsPlayList.get(position).getAlbumName(), "" + newsongsPlayList.get(position).getAlbumsort(),
+                            "" + newsongsPlayList.get(position).getSongID(), "" + newsongsPlayList.get(position).getTitle(), "" + newsongsPlayList.get(position).getWebview(),
+                            "" + newsongsPlayList.get(position).getIsRedirection(), "" + newsongsPlayList.get(position).getRedirectionApp(), "" + newsongsPlayList.get(position).getImage(),
+                            "" + newsongsPlayList.get(position).getYoutubecode(), "" + newsongsPlayList.get(position).getSongSortorder());
 
-                boolean check = false;
-                int index = 0;
-                for (int i = 0; i < Global.favList.size(); i++) {
-                    if (Global.favList.get(i).getTitle().equals(addfav.getTitle())) {
-                        check = true;
-                        index = i;
-                        break;
+                    boolean check = false;
+                    int index = 0;
+                    for (int i = 0; i < Global.favList.size(); i++) {
+                        if (Global.favList.get(i).getTitle().equals(addfav.getTitle())) {
+                            check = true;
+                            index = i;
+                            break;
+                        }
                     }
-                }
-                if (!check) {
-                    holder.fav.setImageResource(R.drawable.ic_fav_selected);
-                    MainActivity.viewModel.insertFav(addfav);
-                    Global.favList.add(addfav);
+                    if (!check) {
+                        holder.fav.setImageResource(R.drawable.ic_fav_selected);
+                        MainActivity.viewModel.insertFav(addfav);
+                        Global.favList.add(addfav);
+                    } else {
+                        MainActivity.viewModel.deleteSingleFav(newsongsPlayList.get(position).getTitle());
+                        holder.fav.setImageResource(R.drawable.ic_fav_unselect);
+                        Global.favList.remove(index);
+                    }
                 } else {
-                    MainActivity.viewModel.deleteSingleFav(newsongsPlayList.get(position).getTitle());
-                    holder.fav.setImageResource(R.drawable.ic_fav_unselect);
-                    Global.favList.remove(index);
+                    Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -126,8 +130,10 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                         Global.recentList.add(recent);
                     }
                     NewPlayer.loadVideo(Global.videoCode);
+
                     // postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(), context);
                 } else {
+                    //   Global.showPopup(context, "Video Code is not valid, try another");
                     Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -154,5 +160,6 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             fav = itemView.findViewById(R.id.playlistSong_fav);
         }
     }
+
 }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jaedongchicken.ytplayer.YoutubePlayerView;
+import com.jaedongchicken.ytplayer.model.PlaybackQuality;
 import com.jaedongchicken.ytplayer.model.YTParams;
 import com.squareup.picasso.Picasso;
 
@@ -22,21 +24,26 @@ import java.util.ArrayList;
 
 import app.sabeeldev.mysongs.Adpater.PlayerAdapter;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
+import app.sabeeldev.mysongs.GeneralClasses.PreferencesHandler;
 import app.sabeeldev.mysongs.Model.PlayList;
 import app.sabeeldev.mysongs.R;
 
 import static app.sabeeldev.mysongs.GeneralClasses.Global.playListSelected;
 
 public class NewPlayer extends AppCompatActivity implements View.OnClickListener {
+    public static PreferencesHandler preferencesHandler;
     public static YoutubePlayerView youtubePlayerView;
     Button btn_audio, btn_video;
+    TextView type;
     public static TextView song_title, song_album, song_duration;
     RecyclerView recyclerView;
     PlayerAdapter playListAdapter;
+    static ImageView btn_play;
     TextView title;
     // url of video which we are loading.
     public static ImageView videoImg;
     ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +51,15 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_new_player);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         init();
-
-
-        // psuse video
-        //youtubePlayerView.pause();
-        // play video when it's ready
-
-
     }
 
     public static void loadVideo(String videoId) {
+        YTParams params = new YTParams();
+        params.setAutoplay(1);
+        params.setPlaybackQuality(PlaybackQuality.small);
+        //  params.setControls(1);
         // initialize YoutubePlayerCallBackListener and VideoID
-        youtubePlayerView.initialize(videoId, new YoutubePlayerView.YouTubeListener() {
+        youtubePlayerView.initialize(videoId, params, new YoutubePlayerView.YouTubeListener() {
 
             @Override
             public void onReady() {
@@ -64,6 +68,14 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onStateChange(YoutubePlayerView.STATE state) {
+                if (state.toString().equals("UNSTARTED") && preferencesHandler.getPlayer().equals("audio")) {
+                    Log.d("StateChecker", "" + state);
+                    //     btn_play.setVisibility(View.VISIBLE);
+                    //   btn_play.setImageResource(R.drawable.play_icon);
+                    //      videoImg.setVisibility(View.VISIBLE);
+                    //   youtubePlayerView.setVisibility(View.INVISIBLE);
+                    //   videoImg.setBackgroundResource(R.drawable.logo_icon);
+                }
                 /**
                  * YoutubePlayerView.STATE
                  *
@@ -103,15 +115,26 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
                 // javascript debug log. you don't need to use it.
             }
         });
-        youtubePlayerView.play();
+
+        // psuse video
+        youtubePlayerView.pause();
+        // play video when it's ready
+        //   youtubePlayerView.play();
+
 
     }
 
     private void init() {
+        type = findViewById(R.id.type);
+
+        preferencesHandler = new PreferencesHandler(NewPlayer.this);
+        btn_play = findViewById(R.id.btn_play);
+        btn_play.setOnClickListener(this);
         youtubePlayerView = (YoutubePlayerView) findViewById(R.id.youtubePlayerView);
-        YTParams params = new YTParams();
+
+
 // make auto height of youtube. if you want to use 'wrap_content'
-        youtubePlayerView.setAutoPlayerHeight(this);
+        //youtubePlayerView.setAutoPlayerHeight(this);
 
         btn_audio = findViewById(R.id.btn_audio);
         btn_audio.setOnClickListener(this);
@@ -162,7 +185,29 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         }
         //  myHandler.post(myRunnable);
         Picasso.get().load(Global.imgURL).into(videoImg);
-        loadVideo(Global.videoCode);
+        if (!Global.videoCode.equals("0") && !Global.videoCode.equals("")) {
+            loadVideo(Global.videoCode);
+        }
+
+
+        if (preferencesHandler.getPlayer().equals("audio")) {
+            type.setText("Audio");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                btn_audio.setBackgroundColor(getColor(R.color.gray));
+                btn_video.setBackgroundColor(getColor(R.color.purple_700));
+            }
+            btn_play.setVisibility(View.VISIBLE);
+            btn_play.setImageResource(R.drawable.play_icon);
+            videoImg.setVisibility(View.VISIBLE);
+        } else {
+            type.setText("Video");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                btn_video.setBackgroundColor(getColor(R.color.gray));
+                btn_audio.setBackgroundColor(getColor(R.color.purple_700));
+            }
+            btn_play.setVisibility(View.GONE);
+            videoImg.setVisibility(View.GONE);
+        }
     }
 
 
@@ -184,8 +229,40 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_audio:
+                type.setText("Audio");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    btn_audio.setBackgroundColor(getColor(R.color.gray));
+                    btn_video.setBackgroundColor(getColor(R.color.purple_700));
+                }
+                youtubePlayerView.pause();
+                Global.isPlay = false;
+                preferencesHandler.setPlayer("audio");
+                btn_play.setVisibility(View.VISIBLE);
+                videoImg.setVisibility(View.VISIBLE);
+                btn_play.setImageResource(R.drawable.play_icon);
                 break;
             case R.id.btn_video:
+                type.setText("Video");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    btn_video.setBackgroundColor(getColor(R.color.gray));
+                    btn_audio.setBackgroundColor(getColor(R.color.purple_700));
+                }
+                youtubePlayerView.pause();
+                Global.isPlay = false;
+                preferencesHandler.setPlayer("video");
+                btn_play.setVisibility(View.GONE);
+                videoImg.setVisibility(View.GONE);
+                break;
+            case R.id.btn_play:
+                if (Global.isPlay) {
+                    Global.isPlay = false;
+                    btn_play.setImageResource(R.drawable.play_icon);
+                    youtubePlayerView.pause();
+                } else {
+                    Global.isPlay = true;
+                    btn_play.setImageResource(R.drawable.pause_icon);
+                    youtubePlayerView.play();
+                }
                 break;
         }
     }
@@ -198,4 +275,5 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         p2 = p2 / 60;
         return String.format("%02d", p2) + ":" + String.format("%02d", p3) + ":" + String.format("%02d", p1);
     }
+
 }

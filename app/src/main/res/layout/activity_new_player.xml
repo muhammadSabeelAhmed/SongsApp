@@ -23,21 +23,40 @@
             android:paddingTop="15dp"
             android:paddingRight="40dp"
             android:paddingBottom="15dp"
+            android:singleLine="true"
             android:text="@string/app_name"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
-        <ImageView
-            android:id="@+id/videoimage"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="fitXY"
-            android:visibility="gone" />
+            android:layout_height="wrap_content">
 
-        <com.jaedongchicken.ytplayer.YoutubePlayerView
-            android:id="@+id/youtubePlayerView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            <com.jaedongchicken.ytplayer.YoutubePlayerView
+                android:id="@+id/youtubePlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <ImageView
+                    android:id="@+id/videoimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/btn_play"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:padding="75dp"
+                    android:src="@drawable/play_icon"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/playedSong_title"

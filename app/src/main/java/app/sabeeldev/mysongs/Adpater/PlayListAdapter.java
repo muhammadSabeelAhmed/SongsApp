@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,10 +73,10 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         holder.playlist_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playerChecker="normal";
+                playerChecker = "normal";
                 if (newsongsPlayList.get(position).getAlbumName().contains("Apps")) {
                     loadURL("https://play.google.com/store/apps/details?id=com.muzikmasti.oldhindivideosongs");
-                } else {
+                } else if (!newsongsPlayList.get(position).getYoutubecode().equals("0") && !newsongsPlayList.get(position).getYoutubecode().equals("")) {
                     Recent recent = new Recent("" + newsongsPlayList.get(position).getAlbumID(), "" + newsongsPlayList.get(position).getAlbumName(), "" + newsongsPlayList.get(position).getAlbumsort(),
                             "" + newsongsPlayList.get(position).getSongID(), "" + newsongsPlayList.get(position).getTitle(), "" + newsongsPlayList.get(position).getWebview(),
                             "" + newsongsPlayList.get(position).getIsRedirection(), "" + newsongsPlayList.get(position).getRedirectionApp(), "" + newsongsPlayList.get(position).getImage(),
@@ -100,8 +101,10 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                     Global.videoCode = newsongsPlayList.get(position).getYoutubecode();
 
                     Global.duration = "";
-                  //  postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
-                   Global.changeActivity(context, new NewPlayer());
+                    //  postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(),context);
+                    Global.changeActivity(context, new NewPlayer());
+                } else {
+                    Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }
             }
         });

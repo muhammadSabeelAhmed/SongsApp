@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,28 +68,32 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
         holder.add_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Favourite addfav = new Favourite("" + recentList.get(position).getAlbumID(), "" + recentList.get(position).getAlbumName(), "" + recentList.get(position).getAlbumsort(),
-                        "" + recentList.get(position).getSongID(), "" + recentList.get(position).getTitle(), "" + recentList.get(position).getWebview(),
-                        "" + recentList.get(position).getIsRedirection(), "" + recentList.get(position).getRedirectionApp(), "" + recentList.get(position).getImage(),
-                        "" + recentList.get(position).getYoutubecode(), "" + recentList.get(position).getSongSortorder());
+                if (!recentList.get(position).getYoutubecode().equals("0") && !recentList.get(position).getYoutubecode().equals("")) {
+                    Favourite addfav = new Favourite("" + recentList.get(position).getAlbumID(), "" + recentList.get(position).getAlbumName(), "" + recentList.get(position).getAlbumsort(),
+                            "" + recentList.get(position).getSongID(), "" + recentList.get(position).getTitle(), "" + recentList.get(position).getWebview(),
+                            "" + recentList.get(position).getIsRedirection(), "" + recentList.get(position).getRedirectionApp(), "" + recentList.get(position).getImage(),
+                            "" + recentList.get(position).getYoutubecode(), "" + recentList.get(position).getSongSortorder());
 
-                boolean check = false;
-                int index = 0;
-                for (int i = 0; i < Global.favList.size(); i++) {
-                    if (Global.favList.get(i).getTitle().equals(addfav.getTitle())) {
-                        check = true;
-                        index = i;
-                        break;
+                    boolean check = false;
+                    int index = 0;
+                    for (int i = 0; i < Global.favList.size(); i++) {
+                        if (Global.favList.get(i).getTitle().equals(addfav.getTitle())) {
+                            check = true;
+                            index = i;
+                            break;
+                        }
                     }
-                }
-                if (!check) {
-                    holder.add_fav.setImageResource(R.drawable.ic_fav_selected);
-                    MainActivity.viewModel.insertFav(addfav);
-                    Global.favList.add(addfav);
+                    if (!check) {
+                        holder.add_fav.setImageResource(R.drawable.ic_fav_selected);
+                        MainActivity.viewModel.insertFav(addfav);
+                        Global.favList.add(addfav);
+                    } else {
+                        MainActivity.viewModel.deleteSingleFav(recentList.get(position).getTitle());
+                        holder.add_fav.setImageResource(R.drawable.ic_fav_unselect);
+                        Global.favList.remove(index);
+                    }
                 } else {
-                    MainActivity.viewModel.deleteSingleFav(recentList.get(position).getTitle());
-                    holder.add_fav.setImageResource(R.drawable.ic_fav_unselect);
-                    Global.favList.remove(index);
+                    Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -120,7 +125,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
                 Global.videoTitle = recentList.get(position).getTitle();
                 Global.duration = "";
                 Global.videoCode = recentList.get(position).getYoutubecode();
-              //  postWebAPIData.GetVideoData(recentList.get(position).getYoutubecode(), context);
+                //  postWebAPIData.GetVideoData(recentList.get(position).getYoutubecode(), context);
                 Global.changeActivity(context, new NewPlayer());
             }
         });
