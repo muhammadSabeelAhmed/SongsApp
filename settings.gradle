@@ -1,3 +1,4 @@
+include ':ytplayer'
 include ':library'
 include ':app'
 rootProject.name = "My Songs"

@@ -28,7 +28,7 @@ import app.sabeeldev.mysongs.RoomDatabase.Favourite;
 import app.sabeeldev.mysongs.RoomDatabase.Recent;
 
 public class Global {
-    public static boolean isPlay = true;
+    public static boolean isPlay = false;
     public static boolean back_status = false;
     public static ArrayList<PlayList.Songs> mySongslists = new ArrayList<>();
     public static ArrayList<String> playList = new ArrayList<>();
