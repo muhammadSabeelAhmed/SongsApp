@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySongs"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.NewPlayer"></activity>
+        <activity android:name=".Activities.NewPlayer" />
         <activity
             android:name=".Activities.Player"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
@@ -29,6 +29,9 @@
         <activity
             android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
     </application>
 
 </manifest>

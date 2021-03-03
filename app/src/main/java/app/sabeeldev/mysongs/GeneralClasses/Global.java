@@ -10,11 +10,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.skydoves.balloon.ArrowOrientation;
-import com.skydoves.balloon.ArrowPositionRules;
-import com.skydoves.balloon.Balloon;
-import com.skydoves.balloon.BalloonAnimation;
-import com.skydoves.balloon.BalloonSizeSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,25 +62,5 @@ public class Global {
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         in.setClass(context, activity.getClass());
         context.startActivity(in);
-    }
-
-    public static void showPopup(Context context, String message) {
-        Balloon balloon = new Balloon.Builder(context)
-                .setArrowSize(10)
-                .setArrowOrientation(ArrowOrientation.TOP)
-                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-                .setArrowPosition(0.5f)
-                .setWidth(BalloonSizeSpec.WRAP)
-                .setHeight(65)
-                .setTextSize(15f)
-                .setCornerRadius(4f)
-                .setAlpha(0.9f)
-                .setText(message)
-                .setTextColor(ContextCompat.getColor(context, R.color.black))
-                .setTextIsHtml(true)
-                .setIconDrawable(ContextCompat.getDrawable(context, R.drawable.logo_icon))
-                .setBackgroundColor(ContextCompat.getColor(context, R.color.purple_700))
-                .setBalloonAnimation(BalloonAnimation.FADE)
-                .build();
     }
 }

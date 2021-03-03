@@ -129,7 +129,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                         MainActivity.viewModel.insertRecent(recent);
                         Global.recentList.add(recent);
                     }
-                    NewPlayer.loadVideo(Global.videoCode);
+                    NewPlayer.loadVideoAdapter(Global.videoCode);
 
                     // postWebAPIData.GetVideoData(newsongsPlayList.get(position).getYoutubecode(), context);
                 } else {
