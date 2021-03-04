@@ -50,10 +50,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         init();
-       // startActivity();
+        startActivity();
 
         //   AdLoader.Builder builder = new AdLoader.Builder(this, AD_MANAGER_AD_UNIT_ID);
-        refreshAd(true, false);
+        // refreshAd(true, false);
 
     }
 
@@ -197,7 +197,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Global.changeActivity(SplashActivity.this, new MainActivity());
+                Global.changeActivity(SplashActivity.this, new CheckActivity());
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }
