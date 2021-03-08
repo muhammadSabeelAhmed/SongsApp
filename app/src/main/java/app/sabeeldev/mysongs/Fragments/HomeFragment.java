@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.common.internal.GmsLogger;
 
 import app.sabeeldev.mysongs.Adpater.MainAdapter;
 import app.sabeeldev.mysongs.GeneralClasses.Global;
@@ -20,6 +23,8 @@ public class HomeFragment extends Fragment {
     View v;
     RecyclerView recyclerView;
     MainAdapter mainAdapter;
+    Handler myhandler;
+    Runnable myrunnable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +37,18 @@ public class HomeFragment extends Fragment {
 
     private void init() {
         setupRv();
-        showList();
+        myhandler = new Handler();
+        myrunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (Global.playList.size() > 0) {
+                    showList();
+                } else {
+                    myhandler.postDelayed(myrunnable, 200);
+                }
+            }
+        };
+        myhandler.post(myrunnable);
     }
 
     private void setupRv() {
@@ -49,6 +65,13 @@ public class HomeFragment extends Fragment {
             mainAdapter.addMain(new SongsMaster(Global.playList.get(i), Global.sortedList.get(i).getMysongs()));
             // outerAdapter.addOuter(new Outer("Recommended", inners));
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (Global.mKProgressHUD.isShowing()) {
+                    Global.mKProgressHUD.dismiss();
+                }
+            }
+        }, 1000);
     }
-
 }

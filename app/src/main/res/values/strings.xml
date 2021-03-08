@@ -7,4 +7,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_no_yt_link">Not a valid Youtube ID</string>
     <string name="title_retry">Try Again!</string>
+
+
+    <string name="title_activity_second_activiy">Interstitial</string>
+    <string name="msg_welcome">Welcome to Admob. Click on the below button to launch the Interstitial ad.</string>
+    <string name="btn_fullscreen_ad">Show Interstitial Ad</string>
+    <string name="btn_rewarded_video">Show Rewarded Video Ad</string>
+
+    <string name="admob_app_id"></string>
+    <string name="banner_home_footer">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_full_screen">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="native_ads">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="rewarded_video">ca-app-pub-3940256099942544/5224354917</string>
 </resources>

@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -51,6 +54,7 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     // url of video which we are loading.
     public static ImageView videoImg;
     ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
+    InterstitialAd mInterstitialAd;
 
     private class HelloWebViewClient extends WebViewClient {
         @Override
@@ -65,6 +69,85 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_new_player);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         init();
+        initAds();
+    }
+
+    private void initAds() {
+        mInterstitialAd = new InterstitialAd(this);
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
+
+        mInterstitialAd = new InterstitialAd(this);
+
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+
+        mInterstitialAd.loadAd(adRequest);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            public void onAdLoaded() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showInterstitial();
+                    }
+                }, 5000);
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+                Global.isPlay = true;
+                btn_play.setImageResource(R.drawable.pause_icon);
+                try {
+                    player.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+
+                Global.isPlay = true;
+                btn_play.setImageResource(R.drawable.pause_icon);
+                try {
+                    player.play();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+
+        if (Global.isPlay) {
+            Global.isPlay = false;
+            btn_play.setImageResource(R.drawable.play_icon);
+            try {
+                player.pause();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 //    public static void loadVideo(String videoId) {

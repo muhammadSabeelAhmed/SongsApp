@@ -67,6 +67,7 @@ dependencies {
     //implementation "com.github.skydoves:balloon:1.3.3"
 //    implementation project(path: ':ytplayer')
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
 
 
 }
