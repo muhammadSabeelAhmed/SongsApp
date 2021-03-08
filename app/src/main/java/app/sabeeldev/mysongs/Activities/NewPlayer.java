@@ -93,7 +93,7 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
                     public void run() {
                         showInterstitial();
                     }
-                }, 5000);
+                }, 3000);
             }
 
             @Override
@@ -148,6 +148,11 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
                 e.printStackTrace();
             }
         }
+    }
+
+
+    private void showbannerAd(){
+
     }
 
 //    public static void loadVideo(String videoId) {

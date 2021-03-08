@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.List;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        //Subscribe to Topic
+        FirebaseMessaging.getInstance().subscribeToTopic("muzikmastihindisongs90");
 
         Global.height = displayMetrics.heightPixels;
         Global.width = displayMetrics.widthPixels;
