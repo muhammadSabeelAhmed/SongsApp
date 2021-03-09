@@ -1,4 +1,4 @@
-package app.sabeeldev.mysongs;
+package com.muzikmasti.hindisongs90;
 
 import org.junit.Test;
 
