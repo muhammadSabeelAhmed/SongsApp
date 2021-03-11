@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "470882662136",
-    "project_id": "new-venture2021",
-    "storage_bucket": "new-venture2021.appspot.com"
+    "project_number": "857617844525",
+    "project_id": "hasan-online",
+    "storage_bucket": "hasan-online.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:470882662136:android:6c1c1bf7886ba3df8ded0d",
+        "mobilesdk_app_id": "1:857617844525:android:814208bf675fdb943beba4",
         "android_client_info": {
           "package_name": "com.muzikmasti.hindisongs90"
         }
       },
       "oauth_client": [
         {
-          "client_id": "470882662136-8dg805e7oeqmsbaklu0k3m0j71uvr3h6.apps.googleusercontent.com",
+          "client_id": "857617844525-apk5927p8g3n20v3dkqs4mb4514q0b8o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAe9l2b-awUj4Yakm1a3LRUZwJTMnTgB6U"
+          "current_key": "AIzaSyDP6EbvlOV-NNGerUz3k9x8oQLb35Vwd8s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "470882662136-8dg805e7oeqmsbaklu0k3m0j71uvr3h6.apps.googleusercontent.com",
+              "client_id": "857617844525-apk5927p8g3n20v3dkqs4mb4514q0b8o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

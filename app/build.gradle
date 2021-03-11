@@ -67,5 +67,5 @@ dependencies {
 //    implementation project(path: ':ytplayer')
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-
+    implementation platform('com.google.firebase:firebase-bom:26.6.0')
 }
