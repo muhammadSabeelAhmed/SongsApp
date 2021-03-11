@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -55,6 +56,7 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     public static ImageView videoImg;
     ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
     InterstitialAd mInterstitialAd;
+    private AdView mAdView;
 
     private class HelloWebViewClient extends WebViewClient {
         @Override
@@ -70,6 +72,7 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         init();
         initAds();
+        initBannerAds();
     }
 
     private void initAds() {
@@ -127,7 +130,6 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         });
     }
 
-
     private void showInterstitial() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
@@ -144,90 +146,8 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-
-    private void showbannerAd() {
-
-    }
-
-//    public static void loadVideo(String videoId) {
-//
-//        Global.isPlay = false;
-//        btn_play.setImageResource(R.drawable.play_icon);
-//        YTParams params = new YTParams();
-//        params.setAutoplay(1);
-////        params.setPlaybackQuality(PlaybackQuality.small);
-////        youtubePlayerView.setMinimumHeight(Global.height);
-//        //  params.setControls(1);
-//        // initialize YoutubePlayerCallBackListener and VideoID
-//        youtubePlayerView.initialize("https://www.youtube.com/embed/" + videoId + "?autoplay=1&mute=1", params, new YoutubePlayerView.YouTubeListener() {
-//
-//            @Override
-//            public void onReady() {
-//                // when player is ready.
-//            }
-//
-//            @Override
-//            public void onStateChange(YoutubePlayerView.STATE state) {
-//                String mystate = state.toString();
-//                if (mystate.equals("UNSTARTED") && preferencesHandler.getPlayer().equals("audio")) {
-//                    Log.d("StateChecker", "" + state);
-//                    //     btn_play.setVisibility(View.VISIBLE);
-//                    //   btn_play.setImageResource(R.drawable.play_icon);
-//                    videoImg.setVisibility(View.VISIBLE);
-//                    //   youtubePlayerView.setVisibility(View.INVISIBLE);
-//                    //   videoImg.setBackgroundResource(R.drawable.logo_icon);
-//                }
-//                /**
-//                 * YoutubePlayerView.STATE
-//                 *
-//                 * UNSTARTED, ENDED, PLAYING, PAUSED, BUFFERING, CUED, NONE
-//                 *
-//                 */
-//            }
-//
-//            @Override
-//            public void onPlaybackQualityChange(String arg) {
-//            }
-//
-//            @Override
-//            public void onPlaybackRateChange(String arg) {
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//            }
-//
-//            @Override
-//            public void onApiChange(String arg) {
-//            }
-//
-//            @Override
-//            public void onCurrentSecond(double second) {
-//                // currentTime callback
-//            }
-//
-//            @Override
-//            public void onDuration(double duration) {
-//                song_duration.setText("Duration: " + convertTime(duration));
-//            }
-//
-//            @Override
-//            public void logs(String log) {
-//                // javascript debug log. you don't need to use it.
-//            }
-//        });
-//
-//        // psuse video
-//        //    youtubePlayerView.pause();
-//        // play video when it's ready
-//        //   youtubePlayerView.play();
-//
-//
-//    }
-
     private void init() {
         type = findViewById(R.id.type);
-
         preferencesHandler = new PreferencesHandler(NewPlayer.this);
         btn_play = findViewById(R.id.btn_play);
         btn_play.setOnClickListener(this);
@@ -441,4 +361,41 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         finish();
         super.onBackPressed();
     }
+
+    private void initBannerAds() {
+        mAdView = (AdView) findViewById(R.id.banner_adView);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        mAdView.loadAd(adRequest);
+
+    }
+
 }

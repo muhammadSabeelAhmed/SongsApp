@@ -69,7 +69,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         if (position < 6) {
             holder.song_title.setVisibility(View.VISIBLE);
             holder.song_img.setVisibility(View.VISIBLE);
-            holder.adView.setVisibility(View.GONE);
+            holder.mAdView.setVisibility(View.GONE);
             holder.playlist_card.setVisibility(View.VISIBLE);
             Picasso.get().load(newsongsPlayList.get(position).getImage()).into(holder.song_img);
             holder.song_title.setText(newsongsPlayList.get(position).getTitle());
@@ -124,8 +124,9 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
             Log.d("AdView", "" + position);
             holder.song_title.setVisibility(View.GONE);
             holder.song_img.setVisibility(View.GONE);
-            holder.adView.setVisibility(View.VISIBLE);
-            nativeAds_google.load(context, holder.adView);
+            holder.mAdView.setVisibility(View.VISIBLE);
+            initAds(holder.mAdView);
+            //nativeAds_google.load(context, holder.adView);
 
         }
     }
@@ -147,6 +148,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         TextView song_title;
         RelativeLayout playlist_card;
         LinearLayout adView;
+        AdView mAdView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -154,6 +156,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
             song_title = itemView.findViewById(R.id.playlistSong_title);
             playlist_card = itemView.findViewById(R.id.playlist_card);
             adView = itemView.findViewById(R.id.adView);
+            mAdView = (AdView) itemView.findViewById(R.id.banner_adView);
 
 //            adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
             //   adView.setAdUnitId(String.valueOf(R.string.native_ads));
@@ -166,4 +169,40 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
             context.startActivity(browserIntent);
         }
     }
+
+    private void initAds(AdView mAdView) {
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(context, "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(context, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(context, "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        mAdView.loadAd(adRequest);
+
+    }
+
 }
