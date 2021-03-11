@@ -51,12 +51,13 @@ public class MainActivity extends AppCompatActivity {
         }
         favouriteHandler();
         recentHandler();
-        mAdView = (AdView) findViewById(R.id.banner_adView);
         initAds();
         Global.changeFragmentMain(MainActivity.this, new MainFragment(), "MainFragment", false);
     }
 
     private void initAds() {
+        mAdView = (AdView) findViewById(R.id.banner_adView);
+
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
 

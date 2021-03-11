@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
-    android:padding="10dp">
+    android:padding="5dp">
 
 
     <LinearLayout
@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
             android:elevation="5sp"
             app:cardCornerRadius="5sp">
 
@@ -28,15 +29,13 @@
                 android:layout_height="100dp"
                 android:scaleType="fitXY" />
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/native_adView"
+            <LinearLayout
+                android:id="@+id/adView"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone"
-                app:adSize="MEDIUM_RECTANGLE"
-                app:adUnitId="@string/native_ads" />
+                android:layout_height="100dp"
+                android:minHeight="100dp"
+                android:orientation="vertical"
+                android:visibility="gone" />
 
         </androidx.cardview.widget.CardView>
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.ads.VideoController;
+import com.muzikmasti.hindisongs90.Admob.nativeAds_google;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -123,38 +125,8 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
             holder.song_title.setVisibility(View.GONE);
             holder.song_img.setVisibility(View.GONE);
             holder.adView.setVisibility(View.VISIBLE);
+            nativeAds_google.load(context, holder.adView);
 
-            holder.adView.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                }
-
-                @Override
-                public void onAdClosed() {
-                    Toast.makeText(context, "Ad is closed!", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    Toast.makeText(context, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    Toast.makeText(context, "Ad left application!", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAdOpened() {
-                    super.onAdOpened();
-                }
-            });
-
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .setRequestAgent("android_studio:ad_template").build();
-
-            holder.adView.loadAd(adRequest);
         }
     }
 
@@ -162,9 +134,9 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
     public int getItemCount() {
         int size = 0;
         Log.d("MySongsSize", "" + newsongsPlayList.size());
-        if (newsongsPlayList.size() >= 6) {
-            size = 6;
-        } else if (newsongsPlayList.size() <= 6) {
+        if (newsongsPlayList.size() >= 7) {
+            size = 7;
+        } else if (newsongsPlayList.size() <= 7) {
             size = newsongsPlayList.size();
         }
         return size;
@@ -174,16 +146,14 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         ImageView song_img;
         TextView song_title;
         RelativeLayout playlist_card;
-        AdView adView;
-        VideoController mVideoController;
+        LinearLayout adView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             song_img = itemView.findViewById(R.id.playlistSong_img);
             song_title = itemView.findViewById(R.id.playlistSong_title);
             playlist_card = itemView.findViewById(R.id.playlist_card);
-            adView = itemView.findViewById(R.id.native_adView);
-            mVideoController = adView.getVideoController();
+            adView = itemView.findViewById(R.id.adView);
 
 //            adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
             //   adView.setAdUnitId(String.valueOf(R.string.native_ads));

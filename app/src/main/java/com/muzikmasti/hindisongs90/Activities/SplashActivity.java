@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.VideoController;
 import com.google.android.gms.ads.VideoOptions;
@@ -33,13 +35,15 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 
 import java.util.Locale;
 
+import com.muzikmasti.hindisongs90.Admob.nativeAds_google;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 import com.muzikmasti.hindisongs90.R;
 import com.muzikmasti.hindisongs90.RetrofitUtils.PostWebAPIData;
 
 public class SplashActivity extends AppCompatActivity {
     PostWebAPIData postWebAPIData;
-    LinearLayout splash_layout;
+    LinearLayout splash_layout, main;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         init();
+        initAds();
         startActivity();
 
     }
@@ -70,4 +75,42 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 4000);
     }
+
+    private void initAds() {
+        mAdView = (AdView) findViewById(R.id.banner_adView);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        mAdView.loadAd(adRequest);
+
+    }
+
+
 }

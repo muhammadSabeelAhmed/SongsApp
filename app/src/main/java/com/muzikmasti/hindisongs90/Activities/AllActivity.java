@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 import com.muzikmasti.hindisongs90.Adpater.AllPlayListAdapter;
@@ -26,6 +27,7 @@ public class AllActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     AllPlayListAdapter playListAdapter;
     InterstitialAd mInterstitialAd;
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,8 @@ public class AllActivity extends AppCompatActivity {
                 playListAdapter.notifyDataSetChanged();
             }
         }
-
         initAds();
-
+        initBannerAds();
     }
 
 
@@ -75,7 +76,7 @@ public class AllActivity extends AppCompatActivity {
 
             @Override
             public void onAdClosed() {
-              //  Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -90,7 +91,7 @@ public class AllActivity extends AppCompatActivity {
 
             @Override
             public void onAdOpened() {
-               // Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -100,4 +101,42 @@ public class AllActivity extends AppCompatActivity {
             mInterstitialAd.show();
         }
     }
+
+    private void initBannerAds() {
+        adView = (AdView) findViewById(R.id.banner_adView);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        adView.loadAd(adRequest);
+
+    }
+
+
 }

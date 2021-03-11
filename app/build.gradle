@@ -56,8 +56,7 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-   implementation 'com.google.android.gms:play-services-ads:19.4.0'
-
+    implementation 'com.google.android.gms:play-services-ads:19.5.0'
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.kaopiz:kprogresshud:1.2.0'
