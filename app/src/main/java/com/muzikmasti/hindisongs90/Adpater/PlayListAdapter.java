@@ -19,11 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.NativeExpressAdView;
-import com.google.android.gms.ads.VideoController;
-import com.muzikmasti.hindisongs90.Admob.nativeAds_google;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.muzikmasti.hindisongs90.Admob;
+package com.muzikmasti.hindisongs90.Ads;
 
 
 import android.app.Activity;

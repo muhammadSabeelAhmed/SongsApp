@@ -10,6 +10,7 @@ public class PreferencesHandler {
     private static final String APP_FIRST_TIME = "app_first_time";
     private static final String UEMAIL = "uemail";
     private static final String PLAYER = "player";
+    private static final String ADS = "ads";
 
     public PreferencesHandler() {
 
@@ -49,6 +50,16 @@ public class PreferencesHandler {
 
     public void setPlayer(String certificates) {
         editor.putString(PLAYER, certificates);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getAds() {
+        return pref.getString(ADS, "admob");
+    }
+
+    public void setAds(String ads) {
+        editor.putString(ADS, ads);
         editor.apply();
         editor.commit();
     }

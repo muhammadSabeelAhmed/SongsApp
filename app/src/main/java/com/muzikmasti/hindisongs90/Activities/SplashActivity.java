@@ -2,41 +2,26 @@ package com.muzikmasti.hindisongs90.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdSize;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.VideoController;
-import com.google.android.gms.ads.VideoOptions;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.formats.MediaView;
-import com.google.android.gms.ads.formats.NativeAdOptions;
-import com.google.android.gms.ads.formats.NativeCustomTemplateAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 
-import java.util.Locale;
-
-import com.muzikmasti.hindisongs90.Admob.nativeAds_google;
+import com.muzikmasti.hindisongs90.Ads.ActivityConfig;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.R;
 import com.muzikmasti.hindisongs90.RetrofitUtils.PostWebAPIData;
 
@@ -44,6 +29,8 @@ public class SplashActivity extends AppCompatActivity {
     PostWebAPIData postWebAPIData;
     LinearLayout splash_layout, main;
     private AdView mAdView;
+    RelativeLayout adContainer;
+    PreferencesHandler preferencesHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +44,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void init() {
+        mAdView = (AdView) findViewById(R.id.banner_adView);
+        adContainer = findViewById(R.id.fb_banner_splash);
+        preferencesHandler = new PreferencesHandler(SplashActivity.this);
+        preferencesHandler.setAds("admob");
+        if (preferencesHandler.getAds().equals("facebook")) {
+            mAdView.setVisibility(View.GONE);
+            loadAdFifty();
+        } else {
+            mAdView.setVisibility(View.VISIBLE);
+        }
+
         postWebAPIData = new PostWebAPIData();
         postWebAPIData.GetAppData("164", "test");
         splash_layout = findViewById(R.id.layout);
@@ -77,8 +75,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initAds() {
-        mAdView = (AdView) findViewById(R.id.banner_adView);
-
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
 
@@ -110,6 +106,34 @@ public class SplashActivity extends AppCompatActivity {
 
         mAdView.loadAd(adRequest);
 
+    }
+
+    private void loadAdFifty() {
+        com.facebook.ads.AdView adView = new com.facebook.ads.AdView(this, ActivityConfig.BANNER_PLACEMENT_ID, AdSize.BANNER_HEIGHT_50);
+        adContainer.addView(adView);
+        com.facebook.ads.AdListener adListener = new com.facebook.ads.AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                Toast.makeText(SplashActivity.this, "Ad 50 Error: " + adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                Toast.makeText(SplashActivity.this, "Ad Loaded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+            }
+        };
+        com.facebook.ads.AdView.AdViewLoadConfig loadAdConfig = adView.buildLoadAdConfig()
+                .withAdListener(adListener)
+                .build();
+        adView.loadAd(loadAdConfig);
     }
 
 
