@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.muzikmasti.hindisongs90.Activities.AllActivity;
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
@@ -106,9 +107,16 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         public void bind(int position) {
             SongsMaster outer = playList.get(position);
+            Random rand = new Random(); //instance of random class
+            int upperbound = 25;
+            //generate random values from 0-24
+            int int_random = rand.nextInt(upperbound);
+            ;
             if (outer != null) {
                 playlist_title.setText(outer.getPlayList());
-                playListAdapter.addInner(outer.getMysongs());
+                ArrayList<PlayList.Songs> myitems = outer.getMysongs();
+                playListAdapter.addInner(myitems);
+
                 if (outer.getMysongs().size() < 6) {
                     view_all.setVisibility(View.GONE);
                 }
