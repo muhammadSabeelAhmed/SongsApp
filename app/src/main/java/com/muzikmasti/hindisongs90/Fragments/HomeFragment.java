@@ -19,12 +19,15 @@ import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
 import com.muzikmasti.hindisongs90.R;
 
+import java.util.Random;
+
 public class HomeFragment extends Fragment {
     View v;
     RecyclerView recyclerView;
     MainAdapter mainAdapter;
     Handler myhandler;
     Runnable myrunnable;
+    public static int random = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,8 +63,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void showList() {
+        Global.myRandoms.clear();
         for (int i = 0; i < Global.playList.size(); i++) { // 2 * 100 = 200 outer
             Log.d("MyPlayListsSize", "" + Global.sortedList.get(i).getMysongs().size());
+            Random rand = new Random();
+            if (Global.sortedList.get(i).getMysongs().size() < 7) {
+                random = rand.nextInt(Global.sortedList.get(i).getMysongs().size());
+            } else {
+                random = rand.nextInt(7);
+            }
+            Global.myRandoms.add(random);
             mainAdapter.addMain(new SongsMaster(Global.playList.get(i), Global.sortedList.get(i).getMysongs()));
             // outerAdapter.addOuter(new Outer("Recommended", inners));
         }

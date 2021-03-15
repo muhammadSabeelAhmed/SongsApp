@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.Activities.NewPlayer;
@@ -48,6 +49,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
     public void addInner(List<PlayList.Songs> inners) {
         newsongsPlayList.clear();
         newsongsPlayList.addAll(inners);
+        //}
         notifyDataSetChanged();
     }
 
@@ -62,7 +64,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //  if (newsongsPlayList.get(position).getAlbumName().equals(currentPlayList)) {
-        if (position < 6) {
+        if (newsongsPlayList.get(position).getAlbumName().contains("Apps") || !newsongsPlayList.get(position).getAlbumsort().contains("ads")) {
             holder.song_title.setVisibility(View.VISIBLE);
             holder.song_img.setVisibility(View.VISIBLE);
             holder.mAdView.setVisibility(View.GONE);

@@ -36,12 +36,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         recycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
-//    public void setAllPlayList(ArrayList<SongsMaster> playList) {
-//        this.playList = playList;
-//        playListAdapter = new PlayListAdapter();
-//        //  notifyDataSetChanged();
-//    }
-
     public void addMain(SongsMaster songsMaster) {
         playList.add(songsMaster);
         notifyDataSetChanged();
@@ -115,6 +109,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             if (outer != null) {
                 playlist_title.setText(outer.getPlayList());
                 ArrayList<PlayList.Songs> myitems = outer.getMysongs();
+                for (int i = 0; i < Global.myRandoms.size(); i++) {
+                    if (i == position) {
+                        if (myitems.size() > Global.myRandoms.get(i)) {
+                            myitems.get(Global.myRandoms.get(i)).setAlbumsort("ads");
+                        }
+                    }
+                }
                 playListAdapter.addInner(myitems);
 
                 if (outer.getMysongs().size() < 6) {

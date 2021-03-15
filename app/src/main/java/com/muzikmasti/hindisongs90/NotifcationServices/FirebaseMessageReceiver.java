@@ -5,6 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -17,16 +20,25 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+
 public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
     // Override onMessageReceived() method to extract the
     // title and
     // body from the message passed in FCM
+    String ttitle, message, image_url, redirect = "";
+    Intent intent;
+
     @Override
     public void
     onMessageReceived(RemoteMessage remoteMessage) {
 
-        Log.d("MyNotificationsReceived", "" + remoteMessage.getNotification().getBody());
+        Log.d("MyNotificationsReceived", "" + remoteMessage.getData());
 
         // First case when notifications are received via
         // data event
@@ -42,34 +54,58 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
 
         // Second case when notification payload is
         // received.
-        if (remoteMessage.getNotification() != null) {
+        if (!remoteMessage.getData().toString().equals("")) {
             // Since the notification is received directly from
             // FCM, the title and the body can be fetched
             // directly as below.
-            Log.d("MyNotificationsReceived", "" + remoteMessage.getNotification().getTitle());
-            showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            JSONObject jsonObject = new JSONObject(remoteMessage.getData());
+            try {
+                ttitle = String.valueOf(jsonObject.get("title"));
+                message = String.valueOf(jsonObject.get("description"));
+                image_url = String.valueOf(jsonObject.get("image"));
+                redirect = String.valueOf(jsonObject.get("redirurl"));
+                Log.d("MyData", "" + ttitle + message);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            showNotification(ttitle, message, image_url, redirect);
         }
     }
 
     // Method to get the custom Design for the display of
     // notification.
-    private RemoteViews getCustomDesign(String title,
-                                        String message) {
+
+
+    public Bitmap getImage(String image_url) {
+        Bitmap image = null;
+        try {
+            URL url = new URL(image_url);
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return image;
+    }
+
+    private RemoteViews getCustomDesign(String title, String message, String image_url, String redirurl) {
         RemoteViews remoteViews = new RemoteViews(
                 getApplicationContext().getPackageName(),
                 R.layout.notification);
         remoteViews.setTextViewText(R.id.title, title);
         remoteViews.setTextViewText(R.id.message, message);
-        remoteViews.setImageViewResource(R.id.icon,
-                R.drawable.logo_icon);
+        remoteViews.setImageViewResource(R.id.icon, R.drawable.logo_icon);
         return remoteViews;
     }
 
     // Method to display the notifications
-    public void showNotification(String title,
-                                 String message) {
+    public void showNotification(String title, String message, String image_url, String redirurl) {
         // Pass the intent to switch to the MainActivity
-        Intent intent = new Intent(this, MainActivity.class);
+        if (redirurl.contains("http") || redirurl.contains("https")) {
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(redirurl));
+        } else {
+            intent = new Intent(this, MainActivity.class);
+        }
         // Assign channel ID
         String channel_id = "notification_channel";
         // Here FLAG_ACTIVITY_CLEAR_TOP flag is set to clear
@@ -89,7 +125,10 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                 = new NotificationCompat
                 .Builder(getApplicationContext(), channel_id)
                 .setSmallIcon(R.drawable.logo_icon)
+                .setLargeIcon(getImage(image_url))
                 .setAutoCancel(true)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setVibrate(new long[]{1000, 1000, 1000,
                         1000, 1000})
                 .setOnlyAlertOnce(true)
@@ -98,17 +137,17 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         // A customized design for the notification can be
         // set only for Android versions 4.1 and above. Thus
         // condition for the same is checked here.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            builder = builder.setContent(
-                    getCustomDesign(title, message));
-        } // If Android Version is lower than Jelly Beans,
-        // customized layout cannot be used and thus the
-        // layout is set as follows
-        else {
-            builder = builder.setContentTitle(title)
-                    .setContentText(message)
-                    .setSmallIcon(R.drawable.logo_icon);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//            builder = builder.setContent(
+//                    getCustomDesign(title, message, image_url, redirect));
+//        } // If Android Version is lower than Jelly Beans,
+//        // customized layout cannot be used and thus the
+//        // layout is set as follows
+//        else {
+//            builder = builder.setContentTitle(title)
+//                    .setContentText(message)
+//                    .setSmallIcon(R.drawable.logo_icon);
+//        }
         // Create an object of NotificationManager class to
         // notify the
         // user of events that happen in the background.
@@ -126,4 +165,5 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         }
         notificationManager.notify(0, builder.build());
     }
+
 }
