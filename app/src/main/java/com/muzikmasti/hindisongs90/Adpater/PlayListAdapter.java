@@ -20,20 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.Activities.NewPlayer;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.Model.PlayList;
 import com.muzikmasti.hindisongs90.R;
 import com.muzikmasti.hindisongs90.RetrofitUtils.PostWebAPIData;
 import com.muzikmasti.hindisongs90.RoomDatabase.Recent;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.muzikmasti.hindisongs90.GeneralClasses.Global.playerChecker;
 
