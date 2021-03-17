@@ -124,7 +124,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
             });
         } else {
             Log.d("AdView", "" + position);
-            holder.song_title.setVisibility(View.GONE);
+            holder.song_title.setText("Advertisement");
             holder.song_img.setVisibility(View.GONE);
             holder.mAdView.setVisibility(View.VISIBLE);
             initAds(holder.mAdView);
