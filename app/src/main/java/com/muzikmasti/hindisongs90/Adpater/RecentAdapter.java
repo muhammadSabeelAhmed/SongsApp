@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,14 +27,17 @@ import com.muzikmasti.hindisongs90.RetrofitUtils.PostWebAPIData;
 import com.muzikmasti.hindisongs90.RoomDatabase.Favourite;
 import com.muzikmasti.hindisongs90.RoomDatabase.Recent;
 
+import static com.muzikmasti.hindisongs90.GeneralClasses.Global.currentPosition;
 import static com.muzikmasti.hindisongs90.GeneralClasses.Global.playerChecker;
 
 public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {
     List<Recent> recentList;
     Context context;
     PostWebAPIData postWebAPIData;
+    PreferencesHandler preferencesHandler;
 
     public RecentAdapter() {
+        preferencesHandler = new PreferencesHandler();
         postWebAPIData = new PostWebAPIData();
         recentList = new ArrayList<>();
     }
@@ -102,6 +106,8 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 playerChecker = "recent";
+                preferencesHandler.setCurrentPlaylist("recent");
+                currentPosition = position;
                 Recent recent = new Recent("" + recentList.get(position).getAlbumID(), "" + recentList.get(position).getAlbumName(), "" + recentList.get(position).getAlbumsort(),
                         "" + recentList.get(position).getSongID(), "" + recentList.get(position).getTitle(), "" + recentList.get(position).getWebview(),
                         "" + recentList.get(position).getIsRedirection(), "" + recentList.get(position).getRedirectionApp(), "" + recentList.get(position).getImage(),

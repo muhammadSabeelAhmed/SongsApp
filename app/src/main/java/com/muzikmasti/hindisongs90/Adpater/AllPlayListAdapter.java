@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,8 +34,10 @@ public class AllPlayListAdapter extends RecyclerView.Adapter<AllPlayListAdapter.
     Context context;
     List<PlayList.Songs> newsongsPlayList;
     PostWebAPIData postWebAPIData;
+    PreferencesHandler preferencesHandler;
 
     public AllPlayListAdapter() {
+        preferencesHandler = new PreferencesHandler();
         postWebAPIData = new PostWebAPIData();
         newsongsPlayList = new ArrayList<>();
     }
@@ -94,7 +97,7 @@ public class AllPlayListAdapter extends RecyclerView.Adapter<AllPlayListAdapter.
                         holder.fav.setImageResource(R.drawable.ic_fav_unselect);
                         Global.favList.remove(index);
                     }
-                }else {
+                } else {
                     Toast.makeText(context, "Invalid Video Code", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -104,6 +107,7 @@ public class AllPlayListAdapter extends RecyclerView.Adapter<AllPlayListAdapter.
             @Override
             public void onClick(View v) {
                 playerChecker = "normal";
+                preferencesHandler.setCurrentPlaylist("");
                 if (newsongsPlayList.get(position).getAlbumName().contains("Apps")) {
 
                 } else {

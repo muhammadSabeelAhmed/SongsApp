@@ -10,8 +10,9 @@ public class PreferencesHandler {
     private static final String APP_FIRST_TIME = "app_first_time";
     private static final String UEMAIL = "uemail";
     private static final String PLAYER = "player";
+    private static final String CURRENT_PLAYLIST = "playlist";
+    private static final String CURRENT_SONG = "song_id";
     private static final String ADS = "ads";
-
     public PreferencesHandler() {
 
     }
@@ -54,8 +55,28 @@ public class PreferencesHandler {
         editor.commit();
     }
 
+    public String getCurrentPlaylist() {
+        return pref.getString(CURRENT_PLAYLIST, "");
+    }
+
+    public void setCurrentPlaylist(String currentPlaylist) {
+        editor.putString(CURRENT_PLAYLIST, currentPlaylist);
+        editor.apply();
+        editor.commit();
+    }
+
+    public String getCurrentSong() {
+        return pref.getString(CURRENT_SONG, "");
+    }
+
+    public void setCurrentSong(String currentSong) {
+        editor.putString(CURRENT_SONG, currentSong);
+        editor.apply();
+        editor.commit();
+    }
+
     public String getAds() {
-        return pref.getString(ADS, "admob");
+        return pref.getString(ADS, "");
     }
 
     public void setAds(String ads) {

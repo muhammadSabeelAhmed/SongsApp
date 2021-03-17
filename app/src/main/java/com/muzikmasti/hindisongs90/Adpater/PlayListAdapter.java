@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -40,8 +41,10 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
     Context context;
     ArrayList<PlayList.Songs> newsongsPlayList;
     PostWebAPIData postWebAPIData;
+    PreferencesHandler preferencesHandler;
 
     public PlayListAdapter() {
+        preferencesHandler = new PreferencesHandler();
         postWebAPIData = new PostWebAPIData();
         newsongsPlayList = new ArrayList<>();
     }
@@ -84,6 +87,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     playerChecker = "normal";
+                    preferencesHandler.setCurrentPlaylist("");
                     if (newsongsPlayList.get(position).getAlbumName().contains("Apps")) {
                         loadURL("https://play.google.com/store/apps/details?id=com.muzikmasti.oldhindivideosongs");
                     } else if (!newsongsPlayList.get(position).getYoutubecode().equals("0") && !newsongsPlayList.get(position).getYoutubecode().equals("")) {

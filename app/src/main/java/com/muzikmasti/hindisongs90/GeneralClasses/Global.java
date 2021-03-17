@@ -46,6 +46,7 @@ public class Global {
     public static int width = 0;
     public static String playerChecker = "";
     public static ArrayList<Integer> myRandoms = new ArrayList<>();
+    public static int currentPosition = 0;
 
     public static void changeFragmentMain(Context context, Fragment fragment, String device_back_tag, boolean status) {
         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fadein,

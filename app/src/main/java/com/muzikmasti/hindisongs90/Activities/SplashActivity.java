@@ -47,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         mAdView = (AdView) findViewById(R.id.banner_adView);
         adContainer = findViewById(R.id.fb_banner_splash);
         preferencesHandler = new PreferencesHandler(SplashActivity.this);
+        preferencesHandler.setCurrentPlaylist("");
         preferencesHandler.setAds("admob");
         if (preferencesHandler.getAds().equals("facebook")) {
             mAdView.setVisibility(View.GONE);

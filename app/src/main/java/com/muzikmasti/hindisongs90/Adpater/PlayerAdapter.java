@@ -105,6 +105,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 if (!newsongsPlayList.get(position).getYoutubecode().equals("0")) {
+                    Global.currentPosition = position;
                     Picasso.get().load(newsongsPlayList.get(position).getImage()).into(NewPlayer.videoImg);
                     //   Global.mKProgressHUD = KProgressHUD.create(v.getContext()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
                     //   Global.mKProgressHUD.show();

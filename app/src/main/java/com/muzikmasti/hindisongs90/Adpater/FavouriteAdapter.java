@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,16 +27,19 @@ import com.muzikmasti.hindisongs90.RoomDatabase.Favourite;
 import com.muzikmasti.hindisongs90.RoomDatabase.Recent;
 
 import static com.muzikmasti.hindisongs90.Fragments.RecentFragment.recentAdapter;
+import static com.muzikmasti.hindisongs90.GeneralClasses.Global.currentPosition;
 import static com.muzikmasti.hindisongs90.GeneralClasses.Global.playerChecker;
 
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
     List<Favourite> favouriteList;
     Context context;
     PostWebAPIData postWebAPIData;
+    PreferencesHandler preferencesHandler;
 
     public FavouriteAdapter() {
         postWebAPIData = new PostWebAPIData();
         favouriteList = new ArrayList<>();
+        preferencesHandler = new PreferencesHandler();
     }
 
     public void setFavourite(List<Favourite> favourite) {
@@ -60,6 +64,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         holder.img_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                preferencesHandler.setCurrentPlaylist("fav");
+                currentPosition = position;
                 MainActivity.viewModel.deleteSingleFav(favouriteList.get(position).getTitle());
                 for (int i = 0; i < Global.favList.size(); i++) {
                     if (Global.favList.get(i).getTitle().equals(favouriteList.get(position).getTitle())) {
@@ -74,7 +80,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         holder.playlist_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playerChecker="fav";
+                playerChecker = "fav";
                 Recent recent = new Recent("" + favouriteList.get(position).getAlbumID(), "" + favouriteList.get(position).getAlbumName(), "" + favouriteList.get(position).getAlbumsort(),
                         "" + favouriteList.get(position).getSongID(), "" + favouriteList.get(position).getTitle(), "" + favouriteList.get(position).getWebview(),
                         "" + favouriteList.get(position).getIsRedirection(), "" + favouriteList.get(position).getRedirectionApp(), "" + favouriteList.get(position).getImage(),
@@ -98,8 +104,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 Global.videoTitle = favouriteList.get(position).getTitle();
                 Global.videoCode = favouriteList.get(position).getYoutubecode();
                 Global.duration = "";
-              //  postWebAPIData.GetVideoData(favouriteList.get(position).getYoutubecode(), context);
-                  Global.changeActivity(context, new NewPlayer());
+                //  postWebAPIData.GetVideoData(favouriteList.get(position).getYoutubecode(), context);
+                Global.changeActivity(context, new NewPlayer());
             }
         });
 

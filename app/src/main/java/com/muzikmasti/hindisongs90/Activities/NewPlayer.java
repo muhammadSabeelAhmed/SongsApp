@@ -57,6 +57,8 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
     InterstitialAd mInterstitialAd;
     private AdView mAdView;
+    public int currentTime = 0;
+    public int totalTime = 0;
 
     private class HelloWebViewClient extends WebViewClient {
         @Override
@@ -257,9 +259,45 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
                     Global.isPlay = true;
                     btn_play.setImageResource(R.drawable.play_icon);
                 }
+                autoPlay();
                 super.onError(youTubePlayer, error);
             }
+
+            @Override
+            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float duration) {
+                totalTime = (int) duration;
+                super.onVideoDuration(youTubePlayer, duration);
+            }
+
+            @Override
+            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float second) {
+                currentTime = (int) second;
+                if (currentTime == totalTime) {
+                    autoPlay();
+                }
+                super.onCurrentSecond(youTubePlayer, second);
+            }
         });
+    }
+
+    public void autoPlay() {
+        if (preferencesHandler.getCurrentPlaylist().equals("fav") && Global.favList.size() > 0) {
+            if (Global.currentPosition < Global.favList.size() - 1) {
+                Global.currentPosition++;
+            } else {
+                Global.currentPosition = 0;
+            }
+            loadVideoAdapter(Global.favList.get(Global.currentPosition).getYoutubecode());
+        } else if (preferencesHandler.getCurrentPlaylist().equals("recent") && Global.recentList.size() > 0) {
+            if (Global.currentPosition < Global.recentList.size() - 1) {
+                Global.currentPosition++;
+            } else {
+                Global.currentPosition = 0;
+            }
+            Global.videoTitle = Global.recentList.get(Global.currentPosition).getTitle();
+            playListSelected = Global.recentList.get(Global.currentPosition).getAlbumName();
+            loadVideoAdapter(Global.recentList.get(Global.currentPosition).getYoutubecode());
+        }
     }
 
     public static void loadVideoAdapter(String videoCode) {
