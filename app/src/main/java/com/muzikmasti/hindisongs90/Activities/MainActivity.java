@@ -1,45 +1,54 @@
 package com.muzikmasti.hindisongs90.Activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kaopiz.kprogresshud.KProgressHUD;
-
-import java.util.List;
-
+import com.muzikmasti.hindisongs90.Ads.AdmobIntrestitialAds;
+import com.muzikmasti.hindisongs90.Ads.FacebookIntrestitialAds;
+import com.muzikmasti.hindisongs90.Fragments.FacebookBanner;
+import com.muzikmasti.hindisongs90.Fragments.GoogleBanner;
 import com.muzikmasti.hindisongs90.Fragments.MainFragment;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.R;
 import com.muzikmasti.hindisongs90.RoomDatabase.DbViewmModel;
 import com.muzikmasti.hindisongs90.RoomDatabase.Favourite;
 import com.muzikmasti.hindisongs90.RoomDatabase.Recent;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     public static DbViewmModel viewModel;
     DisplayMetrics displayMetrics;
-    private AdView mAdView;
-    InterstitialAd mInterstitialAd;
+    AdmobIntrestitialAds admobIntrestitialAds;
+    FacebookIntrestitialAds facebookIntrestitialAds;
+    PreferencesHandler preferencesHandler;
+    Handler myhandler;
+    Runnable myRUnnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         Global.mKProgressHUD = KProgressHUD.create(MainActivity.this).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Playlists").setCancellable(true);
         Global.mKProgressHUD.show();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        init();
+
+    }
+
+    private void init() {
+        preferencesHandler = new PreferencesHandler(MainActivity.this);
         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         //Subscribe to Topic
@@ -53,47 +62,33 @@ public class MainActivity extends AppCompatActivity {
         }
         favouriteHandler();
         recentHandler();
-        initAds();
-        initIntrestAds();
         Global.changeFragmentMain(MainActivity.this, new MainFragment(), "MainFragment", false);
+        myhandler = new Handler();
+        myRUnnable = new Runnable() {
+            @Override
+            public void run() {
+                if (Global.playList.size() > 0) {
+                    initAds();
+                } else {
+                    myhandler.postDelayed(myRUnnable, 500);
+                }
+            }
+        };
+        myhandler.post(myRUnnable);
     }
 
-    private void initAds() {
-        mAdView = (AdView) findViewById(R.id.banner_adView);
-
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-
-        mAdView.loadAd(adRequest);
+    public void initAds() {
+        admobIntrestitialAds = new AdmobIntrestitialAds(MainActivity.this);
+        facebookIntrestitialAds = new FacebookIntrestitialAds(MainActivity.this);
+        if (preferencesHandler.getAds().equals("addmob")) {
+            admobIntrestitialAds.initIntrestAds();
+            Global.changeFragmentSplash(MainActivity.this, new GoogleBanner(), "GoogleBanner", false);
+        } else if (preferencesHandler.getAds().equals("facebook")) {
+            Global.changeFragmentSplash(MainActivity.this, new FacebookBanner(), "FacebookBanner", false);
+            facebookIntrestitialAds.initIntrestAds();
+        }
 
     }
-
 
     public void favouriteHandler() {
         MainActivity.viewModel.getAllFav().observe(this, new Observer<List<Favourite>>() {
@@ -111,78 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 Global.recentList = recents;
             }
         });
-    }
-
-    @Override
-    protected void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-        super.onDestroy();
-    }
-
-    private void initIntrestAds() {
-        mInterstitialAd = new InterstitialAd(this);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
-
-        mInterstitialAd = new InterstitialAd(this);
-
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-
-        mInterstitialAd.loadAd(adRequest);
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            public void onAdLoaded() {
-                showInterstitial();
-
-            }
-
-            @Override
-            public void onAdClosed() {
-                //  Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
     }
 
 }

@@ -45,6 +45,81 @@ public class PlayList {
 
     public static class Adds {
         private String ID, PID, AddType, Banner, Interstitial, Native, Rewarded, Date;
+
+        public Adds(String ID, String PID, String addType, String banner, String interstitial, String aNative, String rewarded, String date) {
+            this.ID = ID;
+            this.PID = PID;
+            AddType = addType;
+            Banner = banner;
+            Interstitial = interstitial;
+            Native = aNative;
+            Rewarded = rewarded;
+            Date = date;
+        }
+
+        public String getID() {
+            return ID;
+        }
+
+        public void setID(String ID) {
+            this.ID = ID;
+        }
+
+        public String getPID() {
+            return PID;
+        }
+
+        public void setPID(String PID) {
+            this.PID = PID;
+        }
+
+        public String getAddType() {
+            return AddType;
+        }
+
+        public void setAddType(String addType) {
+            AddType = addType;
+        }
+
+        public String getBanner() {
+            return Banner;
+        }
+
+        public void setBanner(String banner) {
+            Banner = banner;
+        }
+
+        public String getInterstitial() {
+            return Interstitial;
+        }
+
+        public void setInterstitial(String interstitial) {
+            Interstitial = interstitial;
+        }
+
+        public String getNative() {
+            return Native;
+        }
+
+        public void setNative(String aNative) {
+            Native = aNative;
+        }
+
+        public String getRewarded() {
+            return Rewarded;
+        }
+
+        public void setRewarded(String rewarded) {
+            Rewarded = rewarded;
+        }
+
+        public String getDate() {
+            return Date;
+        }
+
+        public void setDate(String date) {
+            Date = date;
+        }
     }
 
     public static class SongOfTheDay {

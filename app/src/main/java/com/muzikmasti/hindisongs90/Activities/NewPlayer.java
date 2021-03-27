@@ -1,17 +1,10 @@
 package com.muzikmasti.hindisongs90.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -19,25 +12,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.muzikmasti.hindisongs90.Adpater.PlayerAdapter;
+import com.muzikmasti.hindisongs90.Ads.AdmobIntrestitialAds;
+import com.muzikmasti.hindisongs90.Ads.FacebookIntrestitialAds;
+import com.muzikmasti.hindisongs90.Fragments.FacebookBanner;
+import com.muzikmasti.hindisongs90.Fragments.GoogleBanner;
+import com.muzikmasti.hindisongs90.GeneralClasses.Global;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
+import com.muzikmasti.hindisongs90.Model.PlayList;
+import com.muzikmasti.hindisongs90.R;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-
-import com.muzikmasti.hindisongs90.Adpater.PlayerAdapter;
-import com.muzikmasti.hindisongs90.GeneralClasses.Global;
-import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
-import com.muzikmasti.hindisongs90.Model.PlayList;
-import com.muzikmasti.hindisongs90.R;
 
 import static com.muzikmasti.hindisongs90.GeneralClasses.Global.playListSelected;
 
@@ -49,16 +46,16 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     TextView type;
     public static TextView song_title, song_album, song_duration;
     RecyclerView recyclerView;
-    PlayerAdapter playListAdapter;
+    static PlayerAdapter playListAdapter;
     static ImageView btn_play;
     TextView title;
     // url of video which we are loading.
     public static ImageView videoImg;
-    ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
-    InterstitialAd mInterstitialAd;
-    private AdView mAdView;
+    static ArrayList<PlayList.Songs> myPlayList = new ArrayList<>();
     public int currentTime = 0;
     public int totalTime = 0;
+    AdmobIntrestitialAds admobIntrestitialAds;
+    FacebookIntrestitialAds facebookIntrestitialAds;
 
     private class HelloWebViewClient extends WebViewClient {
         @Override
@@ -74,81 +71,21 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         init();
         initAds();
-        initBannerAds();
     }
 
-    private void initAds() {
-        mInterstitialAd = new InterstitialAd(this);
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
-
-        mInterstitialAd = new InterstitialAd(this);
-
-        // set the ad unit ID
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-
-        mInterstitialAd.loadAd(adRequest);
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                //  Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-                Global.isPlay = true;
-                btn_play.setImageResource(R.drawable.pause_icon);
-                try {
-                    player.play();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-
-                Global.isPlay = true;
-                btn_play.setImageResource(R.drawable.pause_icon);
-                try {
-                    player.play();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                //     Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-
-        if (Global.isPlay) {
-            Global.isPlay = false;
-            btn_play.setImageResource(R.drawable.play_icon);
-            try {
-                player.pause();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void initAds() {
+        if (preferencesHandler.getAds().equals("addmob")) {
+            admobIntrestitialAds.initIntrestAds();
+            Global.changeFragmentSplash(NewPlayer.this, new GoogleBanner(), "GoogleBanner", false);
+        } else if (preferencesHandler.getAds().equals("facebook")) {
+            facebookIntrestitialAds.initIntrestAds();
+            Global.changeFragmentSplash(NewPlayer.this, new FacebookBanner(), "FacebookBanner", false);
         }
     }
 
     private void init() {
+        admobIntrestitialAds = new AdmobIntrestitialAds(NewPlayer.this);
+        facebookIntrestitialAds = new FacebookIntrestitialAds(NewPlayer.this);
         type = findViewById(R.id.type);
         preferencesHandler = new PreferencesHandler(NewPlayer.this);
         btn_play = findViewById(R.id.btn_play);
@@ -180,7 +117,10 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         recyclerView.setLayoutManager(new LinearLayoutManager(NewPlayer.this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(playListAdapter);
         Log.d("MyfavSize", "" + Global.favList.size());
+        setupList();
+    }
 
+    private void setupList() {
         if (Global.playerChecker.equals("fav")) {
             title.setText("Favorites Playlist");
             myPlayList.clear();
@@ -246,7 +186,12 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
                     Global.isPlay = true;
                     btn_play.setImageResource(R.drawable.pause_icon);
                 }
-                showInterstitial();
+
+                initAds();
+
+                playListAdapter.notifyDataSetChanged();
+                //playListAdapter.notifyItemChanged(Global.previousPosition);
+                //playListAdapter.notifyItemChanged(Global.currentPosition);
                 btn_audio.setClickable(true);
                 btn_video.setClickable(true);
             }
@@ -303,6 +248,7 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     public static void loadVideoAdapter(String videoCode) {
         song_title.setText(Global.videoTitle);
         song_album.setText(playListSelected);
+
         try {
             player.pause();
         } catch (Exception e) {
@@ -324,7 +270,11 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     protected void onPause() {
         super.onPause();
         // pause video when on the background mode.
-        player.pause();
+        try {
+            player.pause();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -399,41 +349,4 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
         finish();
         super.onBackPressed();
     }
-
-    private void initBannerAds() {
-        mAdView = (AdView) findViewById(R.id.banner_adView);
-
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-
-        mAdView.loadAd(adRequest);
-
-    }
-
 }

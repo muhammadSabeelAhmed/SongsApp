@@ -3,18 +3,17 @@ package com.muzikmasti.hindisongs90.RetrofitUtils;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
-
-import java.util.ArrayList;
-
 import com.muzikmasti.hindisongs90.Activities.Player;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
-import com.muzikmasti.hindisongs90.GeneralClasses.MyBrowser;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.Model.PlayList;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
 import com.muzikmasti.hindisongs90.Model.Video;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,8 +26,10 @@ import static com.muzikmasti.hindisongs90.GeneralClasses.Global.playList;
 public class PostWebAPIData {
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     APIInterface videoApiInterface = VideoClient.getClient().create(APIInterface.class);
+    PreferencesHandler preferencesHandler;
 
     public void GetAppData(String pid, String password) {
+        preferencesHandler = new PreferencesHandler();
         if (NetworkConnectivity.isOnline()) {
             Call<PlayList> call = apiInterface.getPlayListData(pid, password);
             call.enqueue(new Callback<PlayList>() {
@@ -38,7 +39,8 @@ public class PostWebAPIData {
                         Global.playList.clear();
                         Global.mySongslists.clear();
                         mySongslists = response.body().getSongss();
-
+                        preferencesHandler.setAds(response.body().getAdds().getAddType().toLowerCase());
+                        //   preferencesHandler.setAds("facebook");
                         for (int i = 0; i < mySongslists.size(); i++) {
                             if (!Global.playList.contains(mySongslists.get(i).getAlbumName())) {
                                 Global.playList.add(mySongslists.get(i).getAlbumName());

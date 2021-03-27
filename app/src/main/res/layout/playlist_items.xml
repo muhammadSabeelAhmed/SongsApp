@@ -29,24 +29,31 @@
                 android:layout_height="100dp"
                 android:scaleType="fitXY" />
 
-            <LinearLayout
-                android:id="@+id/adView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:minHeight="100dp"
-                android:orientation="vertical"
-                android:visibility="gone" />
-
-
             <com.google.android.gms.ads.AdView
-                android:visibility="gone"
                 android:id="@+id/banner_adView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:visibility="gone"
                 app:adSize="LARGE_BANNER"
                 app:adUnitId="@string/banner_home_footer" />
+
+            <LinearLayout
+                android:id="@+id/nativeAdLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/white"
+                android:gravity="center">
+
+                <com.facebook.ads.NativeAdLayout
+                    android:id="@+id/native_ad_container"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:orientation="vertical"
+                    android:visibility="gone" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <TextView

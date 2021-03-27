@@ -1,6 +1,7 @@
 package com.muzikmasti.hindisongs90.Adpater;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kaopiz.kprogresshud.KProgressHUD;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.Activities.NewPlayer;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
@@ -27,8 +22,10 @@ import com.muzikmasti.hindisongs90.R;
 import com.muzikmasti.hindisongs90.RetrofitUtils.PostWebAPIData;
 import com.muzikmasti.hindisongs90.RoomDatabase.Favourite;
 import com.muzikmasti.hindisongs90.RoomDatabase.Recent;
+import com.squareup.picasso.Picasso;
 
-import static com.muzikmasti.hindisongs90.Activities.Player.videoImg;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder> {
     Context context;
@@ -60,7 +57,10 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
         holder.song_title.setText(newsongsPlayList.get(position).getTitle());
         holder.song_album.setText(newsongsPlayList.get(position).getAlbumName());
         holder.fav.setImageResource(R.drawable.ic_fav_unselect);
-
+        holder.playlist_card.setBackgroundColor(Color.WHITE);
+        if (newsongsPlayList.get(position).getTitle().equals(Global.videoTitle)) {
+            holder.playlist_card.setBackgroundColor(Color.LTGRAY);
+        }
         for (int i = 0; i < Global.favList.size(); i++) {
             if (newsongsPlayList.get(position).getTitle().equals(Global.favList.get(i).getTitle())) {
                 Log.d("MyfavouriteItem", "" + holder.song_title.getText().toString());
@@ -105,6 +105,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 if (!newsongsPlayList.get(position).getYoutubecode().equals("0")) {
+                    Global.previousPosition = Global.currentPosition;
                     Global.currentPosition = position;
                     Picasso.get().load(newsongsPlayList.get(position).getImage()).into(NewPlayer.videoImg);
                     //   Global.mKProgressHUD = KProgressHUD.create(v.getContext()).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);

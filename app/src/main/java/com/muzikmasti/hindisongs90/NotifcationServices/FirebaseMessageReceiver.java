@@ -18,6 +18,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
+import com.muzikmasti.hindisongs90.Activities.SplashActivity;
 import com.muzikmasti.hindisongs90.R;
 
 import org.json.JSONException;
@@ -104,7 +105,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
             intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(redirurl));
         } else {
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, SplashActivity.class);
         }
         // Assign channel ID
         String channel_id = "notification_channel";
@@ -124,8 +125,10 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         NotificationCompat.Builder builder
                 = new NotificationCompat
                 .Builder(getApplicationContext(), channel_id)
-                .setSmallIcon(R.drawable.logo_icon)
-                .setLargeIcon(getImage(image_url))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(getImage(image_url))
+                        .bigLargeIcon(null))
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentText(message)
