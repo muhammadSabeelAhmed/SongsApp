@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,13 +55,6 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
     AdmobIntrestitialAds admobIntrestitialAds;
     FacebookIntrestitialAds facebookIntrestitialAds;
 
-    private class HelloWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return false;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +66,10 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
 
     public void initAds() {
         if (preferencesHandler.getAds().equals("addmob")) {
-            admobIntrestitialAds.initIntrestAds();
+            // admobIntrestitialAds.initIntrestAds();
             Global.changeFragmentSplash(NewPlayer.this, new GoogleBanner(), "GoogleBanner", false);
         } else if (preferencesHandler.getAds().equals("facebook")) {
-            facebookIntrestitialAds.initIntrestAds();
+            // facebookIntrestitialAds.initIntrestAds();
             Global.changeFragmentSplash(NewPlayer.this, new FacebookBanner(), "FacebookBanner", false);
         }
     }
@@ -187,7 +178,11 @@ public class NewPlayer extends AppCompatActivity implements View.OnClickListener
                     btn_play.setImageResource(R.drawable.pause_icon);
                 }
 
-                initAds();
+                if (preferencesHandler.getAds().equals("addmob")) {
+                    admobIntrestitialAds.initIntrestAds();
+                } else if (preferencesHandler.getAds().equals("facebook")) {
+                    facebookIntrestitialAds.initIntrestAds();
+                }
 
                 playListAdapter.notifyDataSetChanged();
                 //playListAdapter.notifyItemChanged(Global.previousPosition);
