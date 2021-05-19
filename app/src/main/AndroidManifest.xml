@@ -44,7 +44,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/purple_700" />
-
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6441488087214922~9568313112"/>
         <service
             android:name=".NotifcationServices.FirebaseMessageReceiver"
             android:enabled="true"

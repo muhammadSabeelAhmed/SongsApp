@@ -26,11 +26,11 @@ import com.facebook.ads.NativeAdLayout;
 import com.facebook.ads.NativeAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.button.MaterialButton;
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.Activities.NewPlayer;
-import com.muzikmasti.hindisongs90.Ads.ActivityConfig;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.Model.PlayList;
@@ -77,7 +77,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         if (newsongsPlayList.get(position).getAlbumName().contains("Apps") || !newsongsPlayList.get(position).getAlbumsort().contains("ads") || (!preferencesHandler.getAds().equals("addmob") && !preferencesHandler.getAds().equals("facebook"))) {
             holder.song_title.setVisibility(View.VISIBLE);
             holder.song_img.setVisibility(View.VISIBLE);
-            holder.mAdView.setVisibility(View.GONE);
+            holder.admobLayout.setVisibility(View.GONE);
             holder.nativeAdLayout.setVisibility(View.GONE);
             holder.playlist_card.setVisibility(View.VISIBLE);
             Picasso.get().load(newsongsPlayList.get(position).getImage()).into(holder.song_img);
@@ -136,8 +136,8 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                 holder.song_title.setText("Advertisement");
                 holder.song_img.setVisibility(View.GONE);
                 FrameLayout.LayoutParams mycurrentparams = new FrameLayout.LayoutParams((Global.height / 5) - 120, (Global.height / 5) - 120);
-                holder.mAdView.setLayoutParams(mycurrentparams);
-                holder.mAdView.setVisibility(View.VISIBLE);
+                holder.admobLayout.setVisibility(View.VISIBLE);
+                holder.admobLayout.setLayoutParams(mycurrentparams);
                 initNativeAdmob(holder.mAdView);
             } else {
                 holder.song_title.setText("Advertisement");
@@ -169,25 +169,31 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         NativeAd nativeAd;
         NativeAdLayout nativeAdLayout;
         LinearLayout nativeLayout;
+        RelativeLayout admobLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            mAdView=new AdView(itemView.getContext());
             song_img = itemView.findViewById(R.id.playlistSong_img);
             song_title = itemView.findViewById(R.id.playlistSong_title);
             playlist_card = itemView.findViewById(R.id.playlist_card);
-            mAdView = (AdView) itemView.findViewById(R.id.banner_adView);
+            admobLayout = (RelativeLayout) itemView.findViewById(R.id.banner_adView);
             nativeAdLayout = itemView.findViewById(R.id.native_ad_container);
             nativeLayout = itemView.findViewById(R.id.nativeAdLayout);
             nativeAdLayout.setVisibility(View.GONE);
             if (preferencesHandler.getAds().equals("facebook")) {
                 loadNativeAd(itemView);
+            }else{
+                mAdView.setAdSize(AdSize.LARGE_BANNER);
+                mAdView.setAdUnitId(Global.API_KEY.get("Banner"));
+                admobLayout.addView(mAdView);
             }
 
         }
 
 
         private void loadNativeAd(View v) {
-            nativeAd = new NativeAd(context, ActivityConfig.FB_NATIVE);
+            nativeAd = new NativeAd(context, Global.API_KEY.get("Native"));
             NativeAdListener nativeAdListener = new NativeAdListener() {
                 @Override
                 public void onMediaDownloaded(Ad ad) {
@@ -274,17 +280,17 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
 
             @Override
             public void onAdClosed() {
-                Toast.makeText(context, "Ad is closed!", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(context, "Ad is closed!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                Toast.makeText(context, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+          //      Toast.makeText(context, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdLeftApplication() {
-                Toast.makeText(context, "Ad left application!", Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(context, "Ad left application!", Toast.LENGTH_SHORT).show();
             }
 
             @Override

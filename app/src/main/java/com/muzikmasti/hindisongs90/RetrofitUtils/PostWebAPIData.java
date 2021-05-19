@@ -1,16 +1,12 @@
 package com.muzikmasti.hindisongs90.RetrofitUtils;
 
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.kaopiz.kprogresshud.KProgressHUD;
-import com.muzikmasti.hindisongs90.Activities.Player;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.Model.PlayList;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
-import com.muzikmasti.hindisongs90.Model.Video;
 
 import java.util.ArrayList;
 
@@ -18,8 +14,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.muzikmasti.hindisongs90.GeneralClasses.Global.API_KEY;
-import static com.muzikmasti.hindisongs90.GeneralClasses.Global.CURRENT_API;
 import static com.muzikmasti.hindisongs90.GeneralClasses.Global.mySongslists;
 import static com.muzikmasti.hindisongs90.GeneralClasses.Global.playList;
 
@@ -40,6 +34,12 @@ public class PostWebAPIData {
                         Global.mySongslists.clear();
                         mySongslists = response.body().getSongss();
                         preferencesHandler.setAds(response.body().getAdds().getAddType().toLowerCase());
+                        Global.API_KEY.clear();
+                        Global.API_KEY.put("Banner", "" + response.body().getAdds().getBanner());
+                        Global.API_KEY.put("Interstitial", "" + response.body().getAdds().getInterstitial());
+                        Global.API_KEY.put("Native", "" + response.body().getAdds().getNative());
+                        Global.API_KEY.put("Rewarded", "" + response.body().getAdds().getRewarded());
+
                         //   preferencesHandler.setAds("facebook");
                         for (int i = 0; i < mySongslists.size(); i++) {
                             if (!Global.playList.contains(mySongslists.get(i).getAlbumName())) {
@@ -71,59 +71,6 @@ public class PostWebAPIData {
                 @Override
                 public void run() {
                     GetAppData(pid, password);
-                }
-            }, 4000);
-        }
-    }
-
-
-    public void GetVideoData(String videoId, Context context) {
-        if (NetworkConnectivity.isOnline()) {
-            Global.mKProgressHUD = KProgressHUD.create(context).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setDimAmount(0.7f).setAnimationSpeed(2).setLabel("Loading Song\nPlease wait").setCancellable(true);
-            Global.mKProgressHUD.show();
-            Call<Video> call = videoApiInterface.getVideoDetails(videoId, CURRENT_API, "youtube-video-info.p.rapidapi.com", "true");
-            call.enqueue(new Callback<Video>() {
-                @Override
-                public void onResponse(Call<Video> call, Response<Video> response) {
-                    if (response.isSuccessful()) {
-                        Video videoExtrat = response.body();
-                        if (videoExtrat.getStatus() == null) {
-                            Global.videosFormats.clear();
-                            Global.videosFormats = videoExtrat.getAllFormats();
-                            //Global.videoTitle = videoExtrat.getVideoTitle();
-                            Global.duration = videoExtrat.getDuration();
-                            // Player.song_title.setText(Global.videoTitle);
-                            // Player.song_duration.setText("Duration: " + Global.duration);
-                            Global.changeActivity(context, new Player());
-                        } else if (videoExtrat.getmessage() != null) {
-                            Global.message = videoExtrat.getmessage();
-                            if (videoExtrat.getmessage().contains("You have exceeded the DAILY quota for Requests on your current plan")) {
-                                if (CURRENT_API.equals(API_KEY[0])) {
-                                    CURRENT_API = API_KEY[1];
-                                } else if (CURRENT_API.equals(API_KEY[1])) {
-                                    CURRENT_API = API_KEY[0];
-                                }
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        GetVideoData(videoId, context);
-                                    }
-                                }, 4000);
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Video> call, Throwable t) {
-                    Log.d("MyResponse", "failure" + t.getMessage());
-                }
-            });
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    GetVideoData(videoId, context);
                 }
             }, 4000);
         }

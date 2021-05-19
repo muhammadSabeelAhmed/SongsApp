@@ -7,6 +7,7 @@ import com.facebook.ads.AbstractAdListener;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.InterstitialAd;
+import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 
 public class FacebookIntrestitialAds {
     InterstitialAd interstitialAd;
@@ -17,7 +18,7 @@ public class FacebookIntrestitialAds {
     }
 
     public void initIntrestAds() {
-        interstitialAd = new InterstitialAd(context, ActivityConfig.FB_INTERSTITIAL);
+        interstitialAd = new InterstitialAd(context, Global.API_KEY.get("Interstitial"));
         AbstractAdListener adListener = new AbstractAdListener() {
             @Override
             public void onError(Ad ad, AdError error) {
