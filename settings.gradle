@@ -1,4 +1,7 @@
 include ':ytplayer'
 include ':library'
 include ':app'
+include ':app'
+include ':nativetemplates'
+
 rootProject.name = "My Songs"

@@ -1,3 +1,4 @@
+
 package com.muzikmasti.hindisongs90.Adpater;
 
 import android.content.Context;
@@ -11,20 +12,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import com.muzikmasti.hindisongs90.Activities.AllActivity;
-import com.muzikmasti.hindisongs90.Activities.MainActivity;
-import com.muzikmasti.hindisongs90.Activities.SplashActivity;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 import com.muzikmasti.hindisongs90.Model.PlayList;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
 import com.muzikmasti.hindisongs90.R;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private RecyclerView.RecycledViewPool recycledViewPool;
@@ -142,3 +140,4 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         }
     }
 }
+

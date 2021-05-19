@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,18 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.AdOptionsView;
-import com.facebook.ads.MediaView;
-import com.facebook.ads.NativeAd;
-import com.facebook.ads.NativeAdLayout;
-import com.facebook.ads.NativeAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.material.button.MaterialButton;
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.Activities.NewPlayer;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
@@ -74,11 +64,12 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //  if (newsongsPlayList.get(position).getAlbumName().equals(currentPlayList)) {
-        if (newsongsPlayList.get(position).getAlbumName().contains("Apps") || !newsongsPlayList.get(position).getAlbumsort().contains("ads") || (!preferencesHandler.getAds().equals("addmob") && !preferencesHandler.getAds().equals("facebook"))) {
+//        if (newsongsPlayList.get(position).getAlbumName().contains("Apps") || !newsongsPlayList.get(position).getAlbumsort().contains("ads") || (!preferencesHandler.getAds().equals("addmob") && !preferencesHandler.getAds().equals("facebook"))) {
+//
             holder.song_title.setVisibility(View.VISIBLE);
             holder.song_img.setVisibility(View.VISIBLE);
-            holder.admobLayout.setVisibility(View.GONE);
-            holder.nativeAdLayout.setVisibility(View.GONE);
+         //   holder.admobLayout.setVisibility(View.GONE);
+           // holder.nativeAdLayout.setVisibility(View.GONE);
             holder.playlist_card.setVisibility(View.VISIBLE);
             Picasso.get().load(newsongsPlayList.get(position).getImage()).into(holder.song_img);
             holder.song_title.setText(newsongsPlayList.get(position).getTitle());
@@ -130,23 +121,23 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                     }
                 }
             });
-        } else {
-            Log.d("AdView", "" + position);
-            if (preferencesHandler.getAds().equals("addmob")) {
-                holder.song_title.setText("Advertisement");
-                holder.song_img.setVisibility(View.GONE);
-                FrameLayout.LayoutParams mycurrentparams = new FrameLayout.LayoutParams((Global.height / 5) - 120, (Global.height / 5) - 120);
-                holder.admobLayout.setVisibility(View.VISIBLE);
-                holder.admobLayout.setLayoutParams(mycurrentparams);
-                initNativeAdmob(holder.mAdView);
-            } else {
-                holder.song_title.setText("Advertisement");
-                holder.song_img.setVisibility(View.GONE);
-                FrameLayout.LayoutParams mycurrentparams = new FrameLayout.LayoutParams((Global.height / 5) - 120, (Global.height / 5) - 120);
-                holder.nativeLayout.setLayoutParams(mycurrentparams);
-                holder.nativeAdLayout.setVisibility(View.VISIBLE);
-            }
-        }
+//        } else {
+//            Log.d("AdView", "" + position);
+//            if (preferencesHandler.getAds().equals("addmob")) {
+//                holder.song_title.setText("Advertisement");
+//                holder.song_img.setVisibility(View.GONE);
+//                FrameLayout.LayoutParams mycurrentparams = new FrameLayout.LayoutParams((Global.height / 5) - 120, (Global.height / 5) - 120);
+//                holder.admobLayout.setVisibility(View.VISIBLE);
+//                holder.admobLayout.setLayoutParams(mycurrentparams);
+//                initNativeAdmob(holder.mAdView);
+//            } else {
+//                holder.song_title.setText("Advertisement");
+//                holder.song_img.setVisibility(View.GONE);
+//                FrameLayout.LayoutParams mycurrentparams = new FrameLayout.LayoutParams((Global.height / 5) - 120, (Global.height / 5) - 120);
+//                holder.nativeLayout.setLayoutParams(mycurrentparams);
+//                holder.nativeAdLayout.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
     @Override
@@ -165,101 +156,101 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         ImageView song_img;
         TextView song_title;
         RelativeLayout playlist_card;
-        AdView mAdView;
-        NativeAd nativeAd;
-        NativeAdLayout nativeAdLayout;
-        LinearLayout nativeLayout;
-        RelativeLayout admobLayout;
+        //AdView mAdView;
+        //NativeAd nativeAd;
+        //NativeAdLayout nativeAdLayout;
+        //LinearLayout nativeLayout;
+        //RelativeLayout admobLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mAdView=new AdView(itemView.getContext());
+          //  mAdView=new AdView(itemView.getContext());
             song_img = itemView.findViewById(R.id.playlistSong_img);
             song_title = itemView.findViewById(R.id.playlistSong_title);
             playlist_card = itemView.findViewById(R.id.playlist_card);
-            admobLayout = (RelativeLayout) itemView.findViewById(R.id.banner_adView);
-            nativeAdLayout = itemView.findViewById(R.id.native_ad_container);
-            nativeLayout = itemView.findViewById(R.id.nativeAdLayout);
-            nativeAdLayout.setVisibility(View.GONE);
-            if (preferencesHandler.getAds().equals("facebook")) {
-                loadNativeAd(itemView);
-            }else{
-                mAdView.setAdSize(AdSize.LARGE_BANNER);
-                mAdView.setAdUnitId(Global.API_KEY.get("Banner"));
-                admobLayout.addView(mAdView);
-            }
+            //admobLayout = (RelativeLayout) itemView.findViewById(R.id.banner_adView);
+          //  nativeAdLayout = itemView.findViewById(R.id.native_ad_container);
+            //nativeLayout = itemView.findViewById(R.id.nativeAdLayout);
+            //nativeAdLayout.setVisibility(View.GONE);
+//            if (preferencesHandler.getAds().equals("facebook")) {
+//                loadNativeAd(itemView);
+//            }else{
+//                mAdView.setAdSize(AdSize.LARGE_BANNER);
+//                mAdView.setAdUnitId(Global.API_KEY.get("Banner"));
+//                admobLayout.addView(mAdView);
+//            }
 
         }
 
 
-        private void loadNativeAd(View v) {
-            nativeAd = new NativeAd(context, Global.API_KEY.get("Native"));
-            NativeAdListener nativeAdListener = new NativeAdListener() {
-                @Override
-                public void onMediaDownloaded(Ad ad) {
-                }
-
-                @Override
-                public void onError(Ad ad, AdError adError) {
-                    Toast.makeText(context, "Error: " + adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAdLoaded(Ad ad) {
-                    if (nativeAd == null || nativeAd != ad) {
-                        return;
-                    }
-                    inflateAd(nativeAd, v);
-                }
-
-                @Override
-                public void onAdClicked(Ad ad) {
-                }
-
-                @Override
-                public void onLoggingImpression(Ad ad) {
-                }
-            };
-            nativeAd.loadAd(nativeAd.buildLoadAdConfig()
-                    .withAdListener(nativeAdListener)
-                    .build());
-
-        }
-
-        private void inflateAd(NativeAd nativeAd, View v) {
-            nativeAd.unregisterView();
-            nativeAdLayout = v.findViewById(R.id.native_ad_container);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View adView = inflater.inflate(R.layout.item_native_ad, nativeAdLayout, false);
-            nativeAdLayout.addView(adView);
-
-            LinearLayout adChoicesContainer = v.findViewById(R.id.ad_choices_container);
-            AdOptionsView adOptionsView = new AdOptionsView(context, nativeAd, nativeAdLayout);
-            adChoicesContainer.removeAllViews();
-            adChoicesContainer.addView(adOptionsView, 0);
-
-            MediaView nativeAdIcon = adView.findViewById(R.id.native_ad_icon);
-            TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
-            MediaView nativeAdMedia = adView.findViewById(R.id.native_ad_media);
-            TextView nativeAdSocialContext = adView.findViewById(R.id.native_ad_social_context);
-            TextView nativeAdBody = adView.findViewById(R.id.native_ad_body);
-            TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
-            MaterialButton nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
-
-            nativeAdTitle.setText(nativeAd.getAdvertiserName());
-            nativeAdBody.setText(nativeAd.getAdBodyText());
-            nativeAdSocialContext.setText(nativeAd.getAdSocialContext());
-            nativeAdCallToAction.setVisibility(nativeAd.hasCallToAction() ? View.VISIBLE : View.INVISIBLE);
-            nativeAdCallToAction.setText(nativeAd.getAdCallToAction());
-            sponsoredLabel.setText(nativeAd.getSponsoredTranslation());
-
-            List<View> clickableViews = new ArrayList<>();
-            clickableViews.add(nativeAdTitle);
-            clickableViews.add(nativeAdCallToAction);
-
-            nativeAd.registerViewForInteraction(
-                    adView, nativeAdMedia, nativeAdIcon, clickableViews);
-        }
+//        private void loadNativeAd(View v) {
+//            nativeAd = new NativeAd(context, Global.API_KEY.get("Native"));
+//            NativeAdListener nativeAdListener = new NativeAdListener() {
+//                @Override
+//                public void onMediaDownloaded(Ad ad) {
+//                }
+//
+//                @Override
+//                public void onError(Ad ad, AdError adError) {
+//                    Toast.makeText(context, "Error: " + adError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onAdLoaded(Ad ad) {
+//                    if (nativeAd == null || nativeAd != ad) {
+//                        return;
+//                    }
+//                    inflateAd(nativeAd, v);
+//                }
+//
+//                @Override
+//                public void onAdClicked(Ad ad) {
+//                }
+//
+//                @Override
+//                public void onLoggingImpression(Ad ad) {
+//                }
+//            };
+//            nativeAd.loadAd(nativeAd.buildLoadAdConfig()
+//                    .withAdListener(nativeAdListener)
+//                    .build());
+//
+//        }
+//
+//        private void inflateAd(NativeAd nativeAd, View v) {
+//            nativeAd.unregisterView();
+//            nativeAdLayout = v.findViewById(R.id.native_ad_container);
+//            LayoutInflater inflater = LayoutInflater.from(context);
+//            View adView = inflater.inflate(R.layout.item_native_ad, nativeAdLayout, false);
+//            nativeAdLayout.addView(adView);
+//
+//            LinearLayout adChoicesContainer = v.findViewById(R.id.ad_choices_container);
+//            AdOptionsView adOptionsView = new AdOptionsView(context, nativeAd, nativeAdLayout);
+//            adChoicesContainer.removeAllViews();
+//            adChoicesContainer.addView(adOptionsView, 0);
+//
+//            MediaView nativeAdIcon = adView.findViewById(R.id.native_ad_icon);
+//            TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
+//            MediaView nativeAdMedia = adView.findViewById(R.id.native_ad_media);
+//            TextView nativeAdSocialContext = adView.findViewById(R.id.native_ad_social_context);
+//            TextView nativeAdBody = adView.findViewById(R.id.native_ad_body);
+//            TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
+//            MaterialButton nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
+//
+//            nativeAdTitle.setText(nativeAd.getAdvertiserName());
+//            nativeAdBody.setText(nativeAd.getAdBodyText());
+//            nativeAdSocialContext.setText(nativeAd.getAdSocialContext());
+//            nativeAdCallToAction.setVisibility(nativeAd.hasCallToAction() ? View.VISIBLE : View.INVISIBLE);
+//            nativeAdCallToAction.setText(nativeAd.getAdCallToAction());
+//            sponsoredLabel.setText(nativeAd.getSponsoredTranslation());
+//
+//            List<View> clickableViews = new ArrayList<>();
+//            clickableViews.add(nativeAdTitle);
+//            clickableViews.add(nativeAdCallToAction);
+//
+//            nativeAd.registerViewForInteraction(
+//                    adView, nativeAdMedia, nativeAdIcon, clickableViews);
+//        }
 
     }
 

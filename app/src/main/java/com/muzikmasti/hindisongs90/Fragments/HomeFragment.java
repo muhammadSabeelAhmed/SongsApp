@@ -1,19 +1,17 @@
 package com.muzikmasti.hindisongs90.Fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.internal.GmsLogger;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.rvadapter.AdmobNativeAdAdapter;
 import com.muzikmasti.hindisongs90.Adpater.MainAdapter;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
@@ -59,7 +57,10 @@ public class HomeFragment extends Fragment {
         recyclerView = v.findViewById(R.id.main_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
         mainAdapter = new MainAdapter();
-        recyclerView.setAdapter(mainAdapter);
+        AdmobNativeAdAdapter admobNativeAdAdapter = AdmobNativeAdAdapter.Builder.with(Global.API_KEY.get("Native"), mainAdapter,
+                "small").adItemInterval(4).build();
+        recyclerView.setAdapter(admobNativeAdAdapter);
+        //recyclerView.setAdapter(mainAdapter);
     }
 
     private void showList() {
