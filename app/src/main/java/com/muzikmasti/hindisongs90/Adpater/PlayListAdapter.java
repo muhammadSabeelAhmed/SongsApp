@@ -16,9 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.muzikmasti.hindisongs90.Activities.MainActivity;
 import com.muzikmasti.hindisongs90.Activities.NewPlayer;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
@@ -144,8 +141,8 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
     public int getItemCount() {
         int size = 0;
         Log.d("MySongsSize", "" + newsongsPlayList.size());
-        if (newsongsPlayList.size() >= 7) {
-            size = 7;
+        if (newsongsPlayList.size() >= 6) {
+            size = 6;
         } else if (newsongsPlayList.size() <= 7) {
             size = newsongsPlayList.size();
         }
@@ -260,35 +257,35 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
             context.startActivity(browserIntent);
         }
     }
-
-    private void initNativeAdmob(AdView mAdView) {
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdClosed() {
-             //   Toast.makeText(context, "Ad is closed!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-          //      Toast.makeText(context, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-           //     Toast.makeText(context, "Ad left application!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-        });
-        mAdView.loadAd(adRequest);
-    }
+//
+//    private void initNativeAdmob(AdView mAdView) {
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .setRequestAgent("android_studio:ad_template").build();
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//             //   Toast.makeText(context, "Ad is closed!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//          //      Toast.makeText(context, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//           //     Toast.makeText(context, "Ad left application!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//        });
+//        mAdView.loadAd(adRequest);
+//    }
 }

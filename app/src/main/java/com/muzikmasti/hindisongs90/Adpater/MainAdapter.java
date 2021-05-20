@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzikmasti.hindisongs90.Activities.AllActivity;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.Model.PlayList;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
 import com.muzikmasti.hindisongs90.R;
@@ -28,6 +29,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private RecyclerView.RecycledViewPool recycledViewPool;
     ArrayList<SongsMaster> playList;
     Context context;
+    PreferencesHandler preferencesHandler;
 
     public MainAdapter() {
         playList = new ArrayList<>();
@@ -43,6 +45,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
+        preferencesHandler = new PreferencesHandler(context);
         View v = LayoutInflater.from(context).inflate(R.layout.main_playlist, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
         viewHolder.rvOuter.setRecycledViewPool(recycledViewPool);
@@ -77,6 +80,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             playlist_title = itemView.findViewById(R.id.playlist_title);
             view_all = itemView.findViewById(R.id.viewAll);
             main_parent = itemView.findViewById(R.id.main_parent);
+
+
 //            view_all.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -138,6 +143,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 });
             }
         }
+
     }
 }
 

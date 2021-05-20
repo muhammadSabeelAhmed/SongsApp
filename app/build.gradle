@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.muzikmasti.hindisongs90"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 25
         versionName "2.5"
@@ -70,5 +70,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'com.facebook.android:audience-network-sdk:6.2.0'
 //    implementation project(path: ':nativetemplates')
+    implementation 'me.timos.thuanle:fb-native-ad-adapter:1.3.2'
 
 }

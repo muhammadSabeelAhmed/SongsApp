@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -44,16 +45,15 @@ public class GoogleBanner extends Fragment {
     private void initAds() {
       //  AdRequest adRequest = new AdRequest.Builder().setRequestAgent("android_studio:ad_template").build();
 
-        AdRequest adRequest = new AdRequest.Builder().setRequestAgent("android_studio:ad_template").build();
-
         mAdView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
+                Toast.makeText(v.getContext(), "Ad is loaded!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdClosed() {
-                //  Toast.makeText(v.getContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+                  Toast.makeText(v.getContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -72,7 +72,7 @@ public class GoogleBanner extends Fragment {
             }
         });
 
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(new AdRequest.Builder().setRequestAgent("android_studio:ad_template").build());
     }
 
 }

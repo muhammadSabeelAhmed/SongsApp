@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.rvadapter.AdmobNativeAdAdapter;
 import com.muzikmasti.hindisongs90.Adpater.MainAdapter;
 import com.muzikmasti.hindisongs90.GeneralClasses.Global;
+import com.muzikmasti.hindisongs90.GeneralClasses.PreferencesHandler;
 import com.muzikmasti.hindisongs90.Model.SongsMaster;
 import com.muzikmasti.hindisongs90.R;
 
 import java.util.Random;
+
+import me.timos.thuanle.fbnativeadadapter.FBNativeAdAdapter;
 
 public class HomeFragment extends Fragment {
     View v;
@@ -26,6 +29,7 @@ public class HomeFragment extends Fragment {
     Handler myhandler;
     Runnable myrunnable;
     public static int random = 0;
+    PreferencesHandler preferencesHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +41,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void init() {
+        preferencesHandler = new PreferencesHandler(v.getContext());
         setupRv();
         myhandler = new Handler();
         myrunnable = new Runnable() {
@@ -57,9 +62,17 @@ public class HomeFragment extends Fragment {
         recyclerView = v.findViewById(R.id.main_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
         mainAdapter = new MainAdapter();
-        AdmobNativeAdAdapter admobNativeAdAdapter = AdmobNativeAdAdapter.Builder.with(Global.API_KEY.get("Native"), mainAdapter,
-                "small").adItemInterval(4).build();
-        recyclerView.setAdapter(admobNativeAdAdapter);
+        Log.d("BannerId", "" + Global.API_KEY.get("Native"));
+        if (preferencesHandler.getAds().equals("facebook")) {
+            FBNativeAdAdapter fbAdapter = FBNativeAdAdapter.Builder.with(Global.API_KEY.get("Native"), mainAdapter).adItemIterval(4)
+                    .build();
+            recyclerView.setAdapter(fbAdapter);
+
+        } else {
+            AdmobNativeAdAdapter admobNativeAdAdapter = AdmobNativeAdAdapter.Builder.with(Global.API_KEY.get("Native"), mainAdapter,
+                    "small").adItemInterval(4).build();
+            recyclerView.setAdapter(admobNativeAdAdapter);
+        }
         //recyclerView.setAdapter(mainAdapter);
     }
 
